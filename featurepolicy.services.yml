@@ -1,0 +1,7 @@
+services:
+  featurepolicy.response_subscriber:
+    class: Drupal\featurepolicy\EventSubscriber\ResponseSubscriber
+    arguments:
+      - '@config.factory'
+    tags:
+      - { name: event_subscriber }
