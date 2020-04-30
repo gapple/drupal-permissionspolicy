@@ -1,0 +1,5 @@
+featurepolicy.settings:
+  title: 'Feature Policy'
+  parent: system.admin_config_system
+  description: 'Configure feature policy enforcement.'
+  route_name: featurepolicy.settings

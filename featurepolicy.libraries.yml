@@ -1,0 +1,8 @@
+admin:
+  css:
+    theme:
+      css/featurepolicy.admin.css: {}
+  js:
+    js/featurepolicy.admin.js: {}
+  dependencies:
+    - core/jquery

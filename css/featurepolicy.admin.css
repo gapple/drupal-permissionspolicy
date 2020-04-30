@@ -1,0 +1,17 @@
+form.featurepolicy-settings [data-drupal-selector$="reporting-handler"] .form-radios,
+form.featurepolicy-settings [data-drupal-selector$="directives"] .form-radios,
+form.featurepolicy-settings [data-drupal-selector$="directives"] .form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+form.featurepolicy-settings [data-drupal-selector$="reporting-handler"] .form-radios .form-item,
+form.featurepolicy-settings [data-drupal-selector$="directives"] .form-radios .form-item,
+form.featurepolicy-settings [data-drupal-selector$="directives"] .form-checkboxes .form-item {
+  margin-right: 3ex;
+}
+form.featurepolicy-settings [data-drupal-selector$="directives"] [data-drupal-selector$="-options"] {
+  margin-left: 2.5ex;
+}
+form.featurepolicy-settings [data-drupal-selector$="directives"] [data-drupal-selector$="-sources"][disabled] {
+  color: transparent;
+}
