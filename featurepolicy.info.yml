@@ -1,5 +1,0 @@
-name: Feature Policy
-type: module
-description: Provide Feature-Policy header
-core_version_requirement: ^8.8 || ^9
-configure: featurepolicy.settings

@@ -1,0 +1,7 @@
+permissionspolicy.settings:
+  path: '/admin/config/system/permissionspolicy'
+  defaults:
+    _form: '\Drupal\permissionspolicy\Form\PermissionsPolicySettingsForm'
+    _title: 'Permissions Policy'
+  requirements:
+    _permission: 'administer permissions policy configuration'

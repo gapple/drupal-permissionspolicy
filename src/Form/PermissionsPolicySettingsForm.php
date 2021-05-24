@@ -1,23 +1,23 @@
 <?php
 
-namespace Drupal\featurepolicy\Form;
+namespace Drupal\permissionspolicy\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\featurepolicy\FeaturePolicy;
+use Drupal\permissionspolicy\PermissionsPolicy;
 
 /**
  * Form for editing Feature Policy module settings.
  */
-class FeaturePolicySettingsForm extends ConfigFormBase {
+class PermissionsPolicySettingsForm extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'featurepolicy_settings';
+    return 'permissionspolicy_settings';
   }
 
   /**
@@ -25,12 +25,12 @@ class FeaturePolicySettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'featurepolicy.settings',
+      'permissionspolicy.settings',
     ];
   }
 
   /**
-   * Constructs a \Drupal\featurepolicy\Form\FeaturePolicySettingsForm object.
+   * Constructs a \Drupal\permissionspolicy\Form\FeaturePolicySettingsForm object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
@@ -58,7 +58,7 @@ class FeaturePolicySettingsForm extends ConfigFormBase {
     // Exclude some directives
     // - 'vr' was replaced by 'xr-spatial-tracking'
     $directives = array_diff(
-      FeaturePolicy::getDirectiveNames(),
+      PermissionsPolicy::getDirectiveNames(),
       [
         'vr',
       ]
@@ -83,9 +83,9 @@ class FeaturePolicySettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('featurepolicy.settings');
+    $config = $this->config('permissionspolicy.settings');
 
-    $form['#attached']['library'][] = 'featurepolicy/admin';
+    $form['#attached']['library'][] = 'permissionspolicy/admin';
 
     $form['policies'] = [
       '#type' => 'vertical_tabs',
@@ -187,7 +187,7 @@ class FeaturePolicySettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $policyTypes = array_keys($this->getPolicyTypes());
-    $directiveNames = FeaturePolicy::getDirectiveNames();
+    $directiveNames = PermissionsPolicy::getDirectiveNames();
     foreach ($policyTypes as $policyTypeKey) {
       foreach ($directiveNames as $directiveName) {
         if (($directiveSources = $form_state->getValue([$policyTypeKey, 'directives', $directiveName, 'sources']))) {
@@ -248,9 +248,9 @@ class FeaturePolicySettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->config('featurepolicy.settings');
+    $config = $this->config('permissionspolicy.settings');
 
-    $directiveNames = FeaturePolicy::getDirectiveNames();
+    $directiveNames = PermissionsPolicy::getDirectiveNames();
     $policyTypes = array_keys($this->getPolicyTypes());
     foreach ($policyTypes as $policyTypeKey) {
       $config->clear($policyTypeKey);

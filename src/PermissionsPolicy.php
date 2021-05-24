@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\featurepolicy;
+namespace Drupal\permissionspolicy;
 
 /**
- * A FeaturePolicy Header.
+ * A PermissionsPolicy Header.
  */
-class FeaturePolicy {
+class PermissionsPolicy {
 
   const POLICY_ANY = "*";
   const POLICY_NONE = "'none'";
   const POLICY_SELF = "'self'";
 
-  // https://w3c.github.io/webappsec-feature-policy/#ascii-serialization
+  // https://www.w3.org/TR/permissions-policy-1/#allowlists
   const DIRECTIVE_SCHEMA_ALLOW_LIST = 'serialized-allow-list';
 
   /**
@@ -20,35 +20,35 @@ class FeaturePolicy {
    * @var array
    */
   const DIRECTIVES = [
-    // Feature Directives.
-    // @see https://w3c.github.io/webappsec-feature-policy/#policy-directive
-    // @see https://github.com/w3c/webappsec-feature-policy/blob/master/features.md
-    'accelerometer' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'ambient-light-sensor' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'autoplay' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'battery' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'camera' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'display-capture' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'document-domain' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'encrypted-media' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'fullscreen' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'execution-while-not-rendered' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'execution-while-out-of-viewport' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'geolocation' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'gyroscope' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'magnetometer' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'microphone' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'midi' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'navigation-override' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'payment' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'picture-in-picture' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'publickey-credentials' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'sync-xhr' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'usb' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    // permissions Directives.
+    // @see https://w3c.github.io/webappsec-permissions-policy/#policy-directive
+    // @see https://github.com/w3c/webappsec-permissions-policy/blob/master/permissionss.md
+    'accelerometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'ambient-light-sensor' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'autoplay' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'battery' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'camera' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'display-capture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'document-domain' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'encrypted-media' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'fullscreen' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'execution-while-not-rendered' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'execution-while-out-of-viewport' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'geolocation' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'gyroscope' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'magnetometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'microphone' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'midi' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'navigation-override' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'payment' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'picture-in-picture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'publickey-credentials' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'sync-xhr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'usb' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
     // 'vr' is deprecated in favour of 'xr-spatial-tracking'.
-    'vr' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'wake-lock' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'xr-spatial-tracking' => FeaturePolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'vr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'wake-lock' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'xr-spatial-tracking' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
   ];
 
   /**
@@ -204,7 +204,7 @@ class FeaturePolicy {
    *   The header name.
    */
   public function getHeaderName() {
-    return 'Feature-Policy';
+    return 'Permissions-Policy';
   }
 
   /**

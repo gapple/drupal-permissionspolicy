@@ -1,0 +1,3 @@
+administer permissions policy configuration:
+  title: 'Administer Permissions Policy'
+  restrict access: true

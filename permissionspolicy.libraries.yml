@@ -1,0 +1,8 @@
+admin:
+  css:
+    theme:
+      css/permissionspolicy.admin.css: {}
+  js:
+    js/permissionspolicy.admin.js: {}
+  dependencies:
+    - core/jquery

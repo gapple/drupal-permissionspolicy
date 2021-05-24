@@ -1,0 +1,85 @@
+# Schema for the configuration files of the permissionspolicy module.
+
+permissionspolicy.settings:
+  type: config_object
+  label: 'Permissions Policy Settings'
+  mapping:
+    enforce:
+      type: permissionspolicy_policy
+      label: 'Enforce Policy'
+
+permissionspolicy_policy:
+  type: mapping
+  label: 'Policy'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable'
+    directives:
+      type: sequence
+      label: 'Directives'
+      sequence:
+        type: permissionspolicy_directive.[%key]
+
+permissionspolicy_directive_allow_list:
+  type: mapping
+  mapping:
+    base:
+      type: string
+      label: 'Base'
+    sources:
+      type: sequence
+      label: 'Sources'
+      sequence:
+        type: string
+
+permissionspolicy_directive.accelerometer:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.ambient-light-sensor:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.autoplay:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.battery:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.camera:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.display-capture:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.document-domain:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.encrypted-media:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.fullscreen:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.geolocation:
+  type: permissionspolicy_directive_allow_list
+permissionspolicy_directive.execution-while-not-rendered:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.execution-while-out-of-viewport:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.gyroscope:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.magnetometer:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.microphone:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.midi:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.navigation-override:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.payment:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.picture-in-picture:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.publickey-credentials:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.sync-xhr:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.usb:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.vr:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.wake-lock:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.xr-spatial-tracking:
+  type: permissions_policy_directive_allow_list

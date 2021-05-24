@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\featurepolicy\EventSubscriber;
+namespace Drupal\permissionspolicy\EventSubscriber;
 
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Cache\CacheableResponseInterface;
@@ -10,7 +10,7 @@ use Drupal\csp\CspEvents;
 use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\csp\LibraryPolicyBuilder;
 use Drupal\csp\ReportingHandlerPluginManager;
-use Drupal\featurepolicy\FeaturePolicy;
+use Drupal\permissionspolicy\PermissionsPolicy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -59,13 +59,13 @@ class ResponseSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $fpConfig = $this->configFactory->get('featurepolicy.settings');
+    $fpConfig = $this->configFactory->get('permissionspolicy.settings');
 
     $response = $event->getResponse();
 
     if ($response instanceof CacheableResponseInterface) {
       $response->getCacheableMetadata()
-        ->addCacheTags(['config:featurepolicy.settings']);
+        ->addCacheTags(['config:permissionspolicy.settings']);
     }
 
     foreach (['enforce'] as $policyType) {
@@ -73,20 +73,20 @@ class ResponseSubscriber implements EventSubscriberInterface {
         continue;
       }
 
-      $policy = new FeaturePolicy();
+      $policy = new PermissionsPolicy();
 
       foreach (($fpConfig->get($policyType . '.directives') ?: []) as $directiveName => $directiveOptions) {
         switch ($directiveOptions['base']) {
           case 'self':
-            $policy->setDirective($directiveName, [FeaturePolicy::POLICY_SELF]);
+            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_SELF]);
             break;
 
           case 'none':
-            $policy->setDirective($directiveName, [FeaturePolicy::POLICY_NONE]);
+            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_NONE]);
             break;
 
           case 'any':
-            $policy->setDirective($directiveName, [FeaturePolicy::POLICY_ANY]);
+            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_ANY]);
             break;
 
           default:

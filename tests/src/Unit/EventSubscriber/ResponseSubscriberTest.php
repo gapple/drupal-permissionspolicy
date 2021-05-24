@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\Tests\featurepolicy\Unit\EventSubscriber;
+namespace Drupal\Tests\permissionspolicy\Unit\EventSubscriber;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Tests\UnitTestCase;
-use Drupal\featurepolicy\EventSubscriber\ResponseSubscriber;
+use Drupal\permissionspolicy\EventSubscriber\ResponseSubscriber;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * @coversDefaultClass \Drupal\featurepolicy\EventSubscriber\ResponseSubscriber
- * @group featurepolicy
+ * @coversDefaultClass \Drupal\permissionspolicy\EventSubscriber\ResponseSubscriber
+ * @group permissionspolicy
  */
 class ResponseSubscriberTest extends UnitTestCase {
 
@@ -76,7 +76,7 @@ class ResponseSubscriberTest extends UnitTestCase {
   public function testEmptyPolicy() {
     /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
-      'featurepolicy.settings' => [
+      'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
         ],
@@ -90,7 +90,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->getCacheableMetadata()
       ->expects($this->once())
       ->method('addCacheTags')
-      ->with(['config:featurepolicy.settings']);
+      ->with(['config:permissionspolicy.settings']);
 
     $subscriber->onKernelResponse($this->event);
   }
@@ -104,7 +104,7 @@ class ResponseSubscriberTest extends UnitTestCase {
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
-      'featurepolicy.settings' => [
+      'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => FALSE,
           'directives' => [
@@ -123,7 +123,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->getCacheableMetadata()
       ->expects($this->once())
       ->method('addCacheTags')
-      ->with(['config:featurepolicy.settings']);
+      ->with(['config:permissionspolicy.settings']);
 
     $subscriber->onKernelResponse($this->event);
   }
@@ -137,7 +137,7 @@ class ResponseSubscriberTest extends UnitTestCase {
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
-      'featurepolicy.settings' => [
+      'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
           'directives' => [
@@ -152,7 +152,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->headers->expects($this->once())
       ->method('set')
       ->with(
-        $this->equalTo('Feature-Policy'),
+        $this->equalTo('Permissions-Policy'),
         $this->equalTo("geolocation 'self'")
       );
 
@@ -170,7 +170,7 @@ class ResponseSubscriberTest extends UnitTestCase {
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
-      'featurepolicy.settings' => [
+      'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
           'directives' => [
@@ -188,7 +188,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->headers->expects($this->once())
       ->method('set')
       ->with(
-        $this->equalTo('Feature-Policy'),
+        $this->equalTo('Permissions-Policy'),
         $this->equalTo("geolocation 'self'; camera 'self'")
       );
 

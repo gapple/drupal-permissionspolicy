@@ -1,6 +1,6 @@
 /**
  * @file
- * Defines Javascript behaviors for the featurepolicy module admin form.
+ * Defines Javascript behaviors for the permissionspolicy module admin form.
  */
 
 (function ($, Drupal) {
@@ -12,7 +12,7 @@
    * @prop {Drupal~behaviorAttach} attach
    *   Attaches summary behaviour for policy form tabs.
    */
-  Drupal.behaviors.featurepolicyPolicySummary = {
+  Drupal.behaviors.permissionspolicyPolicySummary = {
     attach(context) {
       $(context)
         .find('[data-drupal-selector="edit-policies"] > details')

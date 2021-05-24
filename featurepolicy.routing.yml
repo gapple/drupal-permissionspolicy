@@ -1,7 +1,0 @@
-featurepolicy.settings:
-  path: '/admin/config/system/featurepolicy'
-  defaults:
-    _form: '\Drupal\featurepolicy\Form\FeaturePolicySettingsForm'
-    _title: 'Feature Policy'
-  requirements:
-    _permission: 'administer feature policy configuration'

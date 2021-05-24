@@ -1,17 +1,17 @@
 {
-    "name": "drupal/featurepolicy",
+    "name": "drupal/permissionspolicy",
     "type": "drupal-module",
-    "description": "Provide Feature Policy header",
+    "description": "Provide Permissions Policy header",
     "keywords": ["Drupal"],
     "license": "GPL-2.0+",
-    "homepage": "https://www.drupal.org/project/featurepolicy",
+    "homepage": "https://www.drupal.org/project/permissionspolicy",
     "minimum-stability": "dev",
     "support": {
-        "issues": "https://www.drupal.org/project/issues/featurepolicy",
-        "source": "https://git.drupalcode.org/project/featurepolicy"
+        "issues": "https://www.drupal.org/project/issues/permissionspolicy",
+        "source": "https://git.drupalcode.org/project/permissionspolicy"
     },
     "require": {
         "php": "^7.2",
-        "drupal/core": "^8.8 || ^9"
+        "drupal/core": "^8.9 || ^9"
     }
 }
