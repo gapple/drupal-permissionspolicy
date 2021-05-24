@@ -2,17 +2,20 @@
 
 namespace Drupal\permissionspolicy;
 
+use gapple\StructuredFields\Serializer;
+use gapple\StructuredFields\Token;
+
 /**
  * A PermissionsPolicy Header.
  */
 class PermissionsPolicy {
 
-  const POLICY_ANY = "*";
-  const POLICY_NONE = "'none'";
-  const POLICY_SELF = "'self'";
+  const POLICY_ANY = '*';
+  const POLICY_NONE = 'none';
+  const POLICY_SELF = 'self';
 
   // https://www.w3.org/TR/permissions-policy-1/#allowlists
-  const DIRECTIVE_SCHEMA_ALLOW_LIST = 'serialized-allow-list';
+  const DIRECTIVE_SCHEMA_ALLOWLIST = 'allowlist';
 
   /**
    * The schema type for each directive.
@@ -23,32 +26,32 @@ class PermissionsPolicy {
     // permissions Directives.
     // @see https://w3c.github.io/webappsec-permissions-policy/#policy-directive
     // @see https://github.com/w3c/webappsec-permissions-policy/blob/master/permissionss.md
-    'accelerometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'ambient-light-sensor' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'autoplay' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'battery' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'camera' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'display-capture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'document-domain' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'encrypted-media' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'fullscreen' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'execution-while-not-rendered' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'execution-while-out-of-viewport' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'geolocation' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'gyroscope' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'magnetometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'microphone' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'midi' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'navigation-override' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'payment' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'picture-in-picture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'publickey-credentials' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'sync-xhr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'usb' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'accelerometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'ambient-light-sensor' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'autoplay' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'battery' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'camera' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'display-capture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'document-domain' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'encrypted-media' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'fullscreen' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'execution-while-not-rendered' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'execution-while-out-of-viewport' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'geolocation' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'gyroscope' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'magnetometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'microphone' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'midi' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'navigation-override' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'payment' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'picture-in-picture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'publickey-credentials' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'sync-xhr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'usb' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     // 'vr' is deprecated in favour of 'xr-spatial-tracking'.
-    'vr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'wake-lock' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
-    'xr-spatial-tracking' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOW_LIST,
+    'vr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'wake-lock' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'xr-spatial-tracking' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
   ];
 
   /**
@@ -214,16 +217,26 @@ class PermissionsPolicy {
    *   The header value.
    */
   public function getHeaderValue() {
-    $output = [];
+    $output = new \stdClass();
 
     foreach ($this->directives as $name => $value) {
-      if (empty($value)) {
-        continue;
+      // Convert to Structured Fields inner list.
+      $allowlist = array_map(function ($item) {
+        if (in_array($item, [self::POLICY_ANY, self::POLICY_SELF])) {
+          $item = new Token($item);
+        }
+        return [$item, new \stdClass()];
+      }, self::reduceSourceList($value));
+
+      if (count($allowlist) == 1) {
+        $output->{$name} = reset($allowlist);
       }
-      $output[] = $name . ' ' . implode(' ', self::reduceSourceList($value));
+      else {
+        $output->{$name} = [$allowlist, new \stdClass()];
+      }
     }
 
-    return implode('; ', $output);
+    return Serializer::serializeDictionary($output);
   }
 
   /**
@@ -240,7 +253,7 @@ class PermissionsPolicy {
 
     // 'none' overrides any other sources.
     if (in_array(static::POLICY_NONE, $sources)) {
-      return [static::POLICY_NONE];
+      return [];
     }
 
     // Global wildcard covers all network scheme sources.

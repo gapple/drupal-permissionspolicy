@@ -33,7 +33,7 @@ class ResponseSubscriberTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->response = $this->getMockBuilder(HtmlResponse::class)
@@ -153,7 +153,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       ->method('set')
       ->with(
         $this->equalTo('Permissions-Policy'),
-        $this->equalTo("geolocation 'self'")
+        $this->equalTo('geolocation=self')
       );
 
     $subscriber = new ResponseSubscriber($configFactory);
@@ -189,7 +189,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       ->method('set')
       ->with(
         $this->equalTo('Permissions-Policy'),
-        $this->equalTo("geolocation 'self'; camera 'self'")
+        $this->equalTo('geolocation=self, camera=self')
       );
 
     $subscriber = new ResponseSubscriber($configFactory);

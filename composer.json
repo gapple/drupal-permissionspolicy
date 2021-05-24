@@ -12,6 +12,7 @@
     },
     "require": {
         "php": "^7.2",
-        "drupal/core": "^8.9 || ^9"
+        "drupal/core": "^8.9 || ^9",
+        "gapple/structured-fields": "^v0.3.3"
     }
 }
