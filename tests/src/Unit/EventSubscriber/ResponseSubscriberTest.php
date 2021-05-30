@@ -189,7 +189,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       ->method('set')
       ->with(
         $this->equalTo('Permissions-Policy'),
-        $this->equalTo('geolocation=self, camera=self')
+        $this->equalTo('camera=self, geolocation=self')
       );
 
     $subscriber = new ResponseSubscriber($configFactory);

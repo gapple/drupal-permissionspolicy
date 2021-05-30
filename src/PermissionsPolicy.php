@@ -170,10 +170,6 @@ class PermissionsPolicy {
   public function appendDirective($name, $value) {
     self::validateDirectiveName($name);
 
-    if (empty($value)) {
-      return;
-    }
-
     if (gettype($value) === 'string') {
       $value = explode(' ', $value);
     }
@@ -185,7 +181,10 @@ class PermissionsPolicy {
       $this->directives[$name] = [];
     }
 
-    $this->directives[$name] = array_merge($this->directives[$name], $value);
+    $this->directives[$name] = array_merge(
+      $this->directives[$name],
+      array_filter($value)
+    );
   }
 
   /**
@@ -218,6 +217,8 @@ class PermissionsPolicy {
    */
   public function getHeaderValue() {
     $output = new \stdClass();
+
+    ksort($this->directives);
 
     foreach ($this->directives as $name => $value) {
       // Convert to Structured Fields inner list.

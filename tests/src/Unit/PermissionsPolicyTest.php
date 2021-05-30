@@ -127,7 +127,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->appendDirective('geolocation', 'one.example.com');
 
     $this->assertEquals(
-      'geolocation=(self "one.example.com"), camera=(self "two.example.com")',
+      'camera=(self "two.example.com"), geolocation=(self "one.example.com")',
       $policy->getHeaderValue()
     );
   }
@@ -146,7 +146,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->setDirective('camera', []);
 
     $this->assertEquals(
-      "geolocation=self, camera=()",
+      "camera=(), geolocation=self",
       $policy->getHeaderValue()
     );
 
@@ -157,7 +157,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->setDirective('camera', '');
 
     $this->assertEquals(
-      "geolocation=self, camera=()",
+      "camera=(), geolocation=self",
       $policy->getHeaderValue()
     );
   }
@@ -182,7 +182,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->appendDirective('geolocation', '');
     $policy->appendDirective('camera', []);
     $this->assertEquals(
-      'geolocation=self',
+      'camera=(), geolocation=self',
       $policy->getHeaderValue()
     );
   }
@@ -208,7 +208,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->appendDirective('microphone', ['two.example.com', 'two.example.com']);
 
     $this->assertEquals(
-      'geolocation=self, camera="one.example.com", microphone="two.example.com"',
+      'camera="one.example.com", geolocation=self, microphone="two.example.com"',
       $policy->getHeaderValue()
     );
   }
@@ -356,7 +356,7 @@ class PermissionsPolicyTest extends UnitTestCase {
     $policy->setDirective('camera', [PermissionsPolicy::POLICY_SELF, 'example.com']);
 
     $this->assertEquals(
-      'Permissions-Policy: geolocation=self, camera=(self "example.com")',
+      'Permissions-Policy: camera=(self "example.com"), geolocation=self',
       $policy->__toString()
     );
   }
