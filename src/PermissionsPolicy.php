@@ -20,38 +20,55 @@ class PermissionsPolicy {
   /**
    * The schema type for each directive.
    *
+   * @see https://github.com/w3c/webappsec-permissions-policy/blob/main/features.md
+   *
    * @var array
    */
   const DIRECTIVES = [
-    // permissions Directives.
-    // @see https://w3c.github.io/webappsec-permissions-policy/#policy-directive
-    // @see https://github.com/w3c/webappsec-permissions-policy/blob/master/permissionss.md
-    'accelerometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'ambient-light-sensor' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'autoplay' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'battery' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'camera' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'display-capture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'document-domain' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'encrypted-media' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'fullscreen' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'execution-while-not-rendered' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    // Standardized Features
+    'accelerometer'                   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'ambient-light-sensor'            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'autoplay'                        => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'battery'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'camera'                          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'cross-origin-isolated'           => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'display-capture'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'document-domain'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'encrypted-media'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'execution-while-not-rendered'    => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'execution-while-out-of-viewport' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'geolocation' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'gyroscope' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'magnetometer' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'microphone' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'midi' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'navigation-override' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'payment' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'picture-in-picture' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'publickey-credentials' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'sync-xhr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'usb' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    // 'vr' is deprecated in favour of 'xr-spatial-tracking'.
-    'vr' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'wake-lock' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'xr-spatial-tracking' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'fullscreen'                      => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'geolocation'                     => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'gyroscope'                       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'magnetometer'                    => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'microphone'                      => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'midi'                            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'navigation-override'             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'payment'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'picture-in-picture'              => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'publickey-credentials-get'       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'screen-wake-lock'                => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'sync-xhr'                        => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'usb'                             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'web-share'                       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'xr-spatial-tracking'             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+
+    // Proposed Features
+    'clipboard-read'                  => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'clipboard-write'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'gamepad'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'speaker-selection'               => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+
+    // Experimental Features
+    'conversion-measurement'          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'focus-without-user-activation'   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'hid'                             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'idle-detection'                  => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'interest-cohort'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'serial'                          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'sync-script'                     => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'trust-token-redemption'          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'vertical-scroll'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
   ];
 
   /**
