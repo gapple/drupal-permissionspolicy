@@ -142,12 +142,12 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           '#type' => 'radios',
           '#parents' => [$policyTypeKey, 'directives', $directiveName, 'base'],
           '#options' => [
-            'self' => "Self",
             'none' => "None",
+            '' => '<em>empty</em>',
+            'self' => "Self",
             'any' => "Any",
-            '' => '<em>n/a</em>',
           ],
-          '#default_value' => $sourceListBase !== NULL ? $sourceListBase : 'self',
+          '#default_value' => $sourceListBase !== NULL ? $sourceListBase : '',
         ];
 
         $form[$policyTypeKey]['directives'][$directiveName]['options']['sources'] = [
@@ -274,11 +274,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           }
         }
 
-        // Don't store empty base type if no additional values set.
-        // Always store non-empty base value.
-        if (!($directiveFormData['base'] === '' && empty($directiveOptions))) {
-          $directiveOptions['base'] = $directiveFormData['base'];
-        }
+        $directiveOptions['base'] = $directiveFormData['base'];
 
         if (!empty($directiveOptions)) {
           $config->set($policyTypeKey . '.directives.' . $directiveName, $directiveOptions);
