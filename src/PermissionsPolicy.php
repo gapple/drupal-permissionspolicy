@@ -276,14 +276,7 @@ class PermissionsPolicy {
 
     // Global wildcard covers all network scheme sources.
     if (in_array(static::POLICY_ANY, $sources)) {
-      $sources = array_filter($sources, function ($source) {
-        // Keep any values that are a quoted string, or non-network scheme.
-        // e.g. '* https: data: example.com' -> '* data:'
-        // https://www.w3.org/TR/CSP/#match-url-to-source-expression
-        return strpos($source, "'") === 0 || preg_match('<^(?!(?:https?):)([a-z]+:)>', $source);
-      });
-
-      array_unshift($sources, static::POLICY_ANY);
+      return [static::POLICY_ANY];
     }
 
     // Remove protocol-prefixed hosts if protocol is allowed.
