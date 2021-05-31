@@ -55,14 +55,11 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
    *   An array of directive names.
    */
   private function getConfigurableDirectives() {
-    // Exclude some directives
-    // - 'vr' was replaced by 'xr-spatial-tracking'
-    $directives = array_diff(
-      PermissionsPolicy::getDirectiveNames(),
-      [
-        'vr',
-      ]
-    );
+    $directives = PermissionsPolicy::getDirectiveNames();
+
+    // Reorder directives so they're not grouped by status on the form
+    // (standardized, proposed, experimental).
+    sort($directives);
 
     return $directives;
   }
