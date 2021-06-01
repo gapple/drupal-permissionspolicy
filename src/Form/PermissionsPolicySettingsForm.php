@@ -143,11 +143,11 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           '#parents' => [$policyTypeKey, 'directives', $directiveName, 'base'],
           '#options' => [
             'none' => "None",
-            '' => '<em>empty</em>',
+            'empty' => '<em>empty</em>',
             'self' => "Self",
             'any' => "Any",
           ],
-          '#default_value' => $sourceListBase !== NULL ? $sourceListBase : '',
+          '#default_value' => $sourceListBase ?: 'empty',
         ];
 
         $form[$policyTypeKey]['directives'][$directiveName]['options']['sources'] = [
@@ -158,7 +158,9 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           '#default_value' => implode(' ', $config->get($policyTypeKey . '.directives.' . $directiveName . '.sources') ?: []),
           '#states' => [
             'visible' => [
-              [':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][base]"]' => ['!value' => 'none']],
+              [':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][base]"]' => ['value' => 'self']],
+              'or',
+              [':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][base]"]' => ['value' => 'empty']],
             ],
           ],
         ];
@@ -268,13 +270,16 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           continue;
         }
 
-        if ($directiveFormData['base'] !== 'none') {
+        if (in_array($directiveFormData['base'], ['empty', 'self'])) {
           if (!empty($directiveFormData['sources'])) {
             $directiveOptions['sources'] = array_filter(preg_split('/,?\s+/', $directiveFormData['sources']));
           }
         }
 
         $directiveOptions['base'] = $directiveFormData['base'];
+        if ($directiveFormData['base'] == 'empty') {
+          $directiveOptions['base'] = '';
+        }
 
         if (!empty($directiveOptions)) {
           $config->set($policyTypeKey . '.directives.' . $directiveName, $directiveOptions);
