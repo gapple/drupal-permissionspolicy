@@ -4,11 +4,6 @@ namespace Drupal\permissionspolicy\EventSubscriber;
 
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\csp\Csp;
-use Drupal\csp\CspEvents;
-use Drupal\csp\Event\PolicyAlterEvent;
-use Drupal\csp\LibraryPolicyBuilder;
-use Drupal\csp\ReportingHandlerPluginManager;
 use Drupal\permissionspolicy\PermissionsPolicy;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
