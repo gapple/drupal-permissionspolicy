@@ -2,7 +2,6 @@
 
 namespace Drupal\permissionspolicy\EventSubscriber;
 
-use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\csp\Csp;
@@ -11,7 +10,6 @@ use Drupal\csp\Event\PolicyAlterEvent;
 use Drupal\csp\LibraryPolicyBuilder;
 use Drupal\csp\ReportingHandlerPluginManager;
 use Drupal\permissionspolicy\PermissionsPolicy;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
