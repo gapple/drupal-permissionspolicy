@@ -13,6 +13,6 @@
     "require": {
         "php": "^7.2",
         "drupal/core": "^8.9 || ^9",
-        "gapple/structured-fields": "^v0.3.3"
+        "gapple/structured-fields": "^0.3.3"
     }
 }
