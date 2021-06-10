@@ -96,6 +96,9 @@ class ResponseSubscriber implements EventSubscriberInterface {
       if (($headerValue = $policy->getHeaderValue())) {
         $response->headers->set($policy->getHeaderName(), $headerValue);
       }
+      elseif ($response->headers->has($policy->getHeaderName())) {
+        $response->headers->remove($policy->getHeaderName());
+      }
     }
   }
 

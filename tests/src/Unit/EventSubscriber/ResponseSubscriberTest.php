@@ -197,4 +197,76 @@ class ResponseSubscriberTest extends UnitTestCase {
     $subscriber->onKernelResponse($this->event);
   }
 
+  /**
+   * A previously set header should be removed if policy is enabled but empty.
+   *
+   * @covers ::onKernelResponse
+   */
+  public function testOverrideWhenEmpty() {
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    $configFactory = $this->getConfigFactoryStub([
+      'permissionspolicy.settings' => [
+        'enforce' => [
+          'enable' => TRUE,
+          'directives' => [],
+        ],
+      ],
+    ]);
+
+    // Default value provided by core.
+    // @see \Drupal\Core\EventSubscriber\FinishResponseSubscriber::onRespond().
+    $this->response->headers->method('has')
+      ->with('Permissions-Policy')
+      ->willReturn(TRUE);
+
+    $this->response->headers->expects($this->once())
+      ->method('remove')
+      ->with(
+        $this->equalTo('Permissions-Policy')
+      );
+    $this->response->headers->expects($this->never())
+      ->method('set');
+
+    $subscriber = new ResponseSubscriber($configFactory);
+
+    $subscriber->onKernelResponse($this->event);
+  }
+
+  /**
+   * A previously set header should not be removed if policy is disabled.
+   *
+   * @covers ::onKernelResponse
+   */
+  public function testNoOverrideWhenDisabled() {
+
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    $configFactory = $this->getConfigFactoryStub([
+      'permissionspolicy.settings' => [
+        'enforce' => [
+          'enable' => FALSE,
+          'directives' => [],
+        ],
+      ],
+    ]);
+
+    // Default value provided by core.
+    // @see \Drupal\Core\EventSubscriber\FinishResponseSubscriber::onRespond().
+    $this->response->headers->method('has')
+      ->with('Permissions-Policy')
+      ->willReturn(TRUE);
+
+    $this->response->headers->expects($this->never())
+      ->method('remove')
+      ->with(
+        $this->equalTo('Permissions-Policy')
+      );
+    $this->response->headers->expects($this->never())
+      ->method('set');
+
+    $subscriber = new ResponseSubscriber($configFactory);
+
+    $subscriber->onKernelResponse($this->event);
+  }
+
 }
