@@ -1,2 +1,5 @@
 enforce:
-  enable: false
+  enable: true
+  directives:
+    interest-cohort:
+      base: ''
