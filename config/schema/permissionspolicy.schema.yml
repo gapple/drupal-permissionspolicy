@@ -33,6 +33,7 @@ permissionspolicy_directive_allow_list:
       sequence:
         type: string
 
+# Standardized Features
 permissionspolicy_directive.accelerometer:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.ambient-light-sensor:
@@ -43,19 +44,21 @@ permissionspolicy_directive.battery:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.camera:
   type: permissions_policy_directive_allow_list
+permissionspolicy_directive.cross-origin-isolated:
+  type: permissions_policy_directive_allow_list
 permissionspolicy_directive.display-capture:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.document-domain:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.encrypted-media:
   type: permissions_policy_directive_allow_list
-permissionspolicy_directive.fullscreen:
-  type: permissions_policy_directive_allow_list
-permissionspolicy_directive.geolocation:
-  type: permissionspolicy_directive_allow_list
 permissionspolicy_directive.execution-while-not-rendered:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.execution-while-out-of-viewport:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.fullscreen:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.geolocation:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.gyroscope:
   type: permissions_policy_directive_allow_list
@@ -71,15 +74,45 @@ permissionspolicy_directive.payment:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.picture-in-picture:
   type: permissions_policy_directive_allow_list
-permissionspolicy_directive.publickey-credentials:
+permissionspolicy_directive.publickey-credentials-get:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.screen-wake-lock:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.sync-xhr:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.usb:
   type: permissions_policy_directive_allow_list
-permissionspolicy_directive.vr:
-  type: permissions_policy_directive_allow_list
-permissionspolicy_directive.wake-lock:
+permissionspolicy_directive.web-share:
   type: permissions_policy_directive_allow_list
 permissionspolicy_directive.xr-spatial-tracking:
+  type: permissions_policy_directive_allow_list
+
+# Proposed Features
+permissionspolicy_directive.clipboard-read:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.clipboard-write:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.gamepad:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.speaker-selection:
+  type: permissions_policy_directive_allow_list
+
+# Experimental Features
+permissionspolicy_directive.conversion-measurement:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.focus-without-user-activation:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.hid:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.idle-detection:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.interest-cohort:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.serial:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.sync-script:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.trust-token-redemption:
+  type: permissions_policy_directive_allow_list
+permissionspolicy_directive.vertical-scroll:
   type: permissions_policy_directive_allow_list

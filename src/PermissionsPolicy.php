@@ -25,7 +25,7 @@ class PermissionsPolicy {
    * @var array
    */
   const DIRECTIVES = [
-    // Standardized Features
+    // Standardized Features.
     'accelerometer'                   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'ambient-light-sensor'            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'autoplay'                        => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
@@ -53,13 +53,13 @@ class PermissionsPolicy {
     'web-share'                       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'xr-spatial-tracking'             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
 
-    // Proposed Features
+    // Proposed Features.
     'clipboard-read'                  => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'clipboard-write'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'gamepad'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'speaker-selection'               => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
 
-    // Experimental Features
+    // Experimental Features.
     'conversion-measurement'          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'focus-without-user-activation'   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'hid'                             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
