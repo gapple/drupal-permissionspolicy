@@ -87,7 +87,7 @@ class PermissionsPolicy {
    * @return bool
    *   True if the directive name is valid.
    */
-  public static function isValidDirectiveName($name) {
+  public static function isValidDirectiveName(string $name): bool {
     return array_key_exists($name, static::DIRECTIVES);
   }
 
@@ -99,7 +99,7 @@ class PermissionsPolicy {
    *
    * @throws \InvalidArgumentException
    */
-  private static function validateDirectiveName($name) {
+  private static function validateDirectiveName(string $name): void {
     if (!static::isValidDirectiveName($name)) {
       throw new \InvalidArgumentException("Invalid directive name provided");
     }
@@ -108,10 +108,10 @@ class PermissionsPolicy {
   /**
    * Get the valid directive names.
    *
-   * @return array
+   * @return string[]
    *   An array of directive names.
    */
-  public static function getDirectiveNames() {
+  public static function getDirectiveNames(): array {
     return array_keys(self::DIRECTIVES);
   }
 
@@ -124,7 +124,7 @@ class PermissionsPolicy {
    * @return string
    *   A DIRECTIVE_SCHEMA_* constant value
    */
-  public static function getDirectiveSchema($name) {
+  public static function getDirectiveSchema(string $name): string {
     self::validateDirectiveName($name);
 
     return self::DIRECTIVES[$name];
@@ -139,7 +139,7 @@ class PermissionsPolicy {
    * @return bool
    *   If the policy has the specified directive.
    */
-  public function hasDirective($name) {
+  public function hasDirective(string $name): bool {
     return isset($this->directives[$name]);
   }
 
@@ -149,10 +149,10 @@ class PermissionsPolicy {
    * @param string $name
    *   The directive name.
    *
-   * @return array
+   * @return string[]
    *   The directive's values.
    */
-  public function getDirective($name) {
+  public function getDirective(string $name): array {
     self::validateDirectiveName($name);
 
     return $this->directives[$name];
@@ -163,10 +163,10 @@ class PermissionsPolicy {
    *
    * @param string $name
    *   The directive name.
-   * @param array|bool|string $value
+   * @param array|string $value
    *   The directive value.
    */
-  public function setDirective($name, $value) {
+  public function setDirective(string $name, $value): void {
     self::validateDirectiveName($name);
 
     $this->directives[$name] = [];
@@ -184,7 +184,7 @@ class PermissionsPolicy {
    * @param array|string $value
    *   The directive value.
    */
-  public function appendDirective($name, $value) {
+  public function appendDirective(string $name, $value): void {
     self::validateDirectiveName($name);
 
     if (gettype($value) === 'string') {
@@ -210,7 +210,7 @@ class PermissionsPolicy {
    * @param string $name
    *   The directive name.
    */
-  public function removeDirective($name) {
+  public function removeDirective(string $name): void {
     self::validateDirectiveName($name);
 
     unset($this->directives[$name]);
@@ -222,7 +222,7 @@ class PermissionsPolicy {
    * @return string
    *   The header name.
    */
-  public function getHeaderName() {
+  public function getHeaderName(): string {
     return 'Permissions-Policy';
   }
 
@@ -232,7 +232,7 @@ class PermissionsPolicy {
    * @return string
    *   The header value.
    */
-  public function getHeaderValue() {
+  public function getHeaderValue(): string {
     $output = new \stdClass();
 
     ksort($this->directives);
@@ -263,10 +263,10 @@ class PermissionsPolicy {
    * @param array $sources
    *   The array of sources.
    *
-   * @return array
+   * @return string[]
    *   The reduced set of sources.
    */
-  private static function reduceSourceList(array $sources) {
+  private static function reduceSourceList(array $sources): array {
     $sources = array_unique($sources);
 
     // 'none' overrides any other sources.
@@ -280,7 +280,7 @@ class PermissionsPolicy {
     }
 
     // Remove protocol-prefixed hosts if protocol is allowed.
-    // e.g. 'http: data: example.com https://example.com' -> 'http: data: example.com'
+    // e.g. 'http: example.com https://example.com' -> 'http: example.com'.
     $protocols = array_filter($sources, function ($source) {
       return preg_match('<^(https?):$>', $source);
     });
@@ -302,7 +302,7 @@ class PermissionsPolicy {
    * @return string
    *   The full header string.
    */
-  public function __toString() {
+  public function __toString(): string {
     return $this->getHeaderName() . ': ' . $this->getHeaderValue();
   }
 
