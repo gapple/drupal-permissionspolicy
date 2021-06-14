@@ -138,6 +138,16 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
         ];
 
         $sourceListBase = $config->get($policyTypeKey . '.directives.' . $directiveName . '.base');
+        if (
+          $sourceListBase === NULL
+          &&
+          !empty(PermissionsPolicy::DIRECTIVE_DEFAULT_ALLOWLIST[$directiveName])
+        ) {
+          $sourceListBase = PermissionsPolicy::DIRECTIVE_DEFAULT_ALLOWLIST[$directiveName];
+          if ($sourceListBase == PermissionsPolicy::POLICY_ANY) {
+            $sourceListBase = 'any';
+          }
+        }
         $form[$policyTypeKey]['directives'][$directiveName]['options']['base'] = [
           '#type' => 'radios',
           '#parents' => [$policyTypeKey, 'directives', $directiveName, 'base'],
