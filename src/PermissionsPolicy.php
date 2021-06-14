@@ -10,12 +10,12 @@ use gapple\StructuredFields\Token;
  */
 class PermissionsPolicy {
 
-  const POLICY_ANY = '*';
-  const POLICY_NONE = 'none';
-  const POLICY_SELF = 'self';
+  public const POLICY_ANY = '*';
+  public const POLICY_NONE = 'none';
+  public const POLICY_SELF = 'self';
 
   // https://www.w3.org/TR/permissions-policy-1/#allowlists
-  const DIRECTIVE_SCHEMA_ALLOWLIST = 'allowlist';
+  public const DIRECTIVE_SCHEMA_ALLOWLIST = 'allowlist';
 
   /**
    * The schema type for each directive.
@@ -24,7 +24,7 @@ class PermissionsPolicy {
    *
    * @var array
    */
-  const DIRECTIVES = [
+  public const DIRECTIVES = [
     // Standardized Features.
     'accelerometer'                   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
     'ambient-light-sensor'            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
