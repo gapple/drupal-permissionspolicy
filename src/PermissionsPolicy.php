@@ -71,6 +71,59 @@ class PermissionsPolicy {
     'vertical-scroll'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
   ];
 
+
+  /**
+   * A map of default allowlist values for each directive.
+   *
+   * @var array
+   */
+  public const DIRECTIVE_DEFAULT_ALLOWLIST = [
+    // Standardized Features.
+    'accelerometer'                   => PermissionsPolicy::POLICY_SELF,
+    'ambient-light-sensor'            => PermissionsPolicy::POLICY_SELF,
+    'autoplay'                        => PermissionsPolicy::POLICY_SELF,
+    'battery'                         => PermissionsPolicy::POLICY_SELF,
+    'camera'                          => PermissionsPolicy::POLICY_SELF,
+    'cross-origin-isolated'           => PermissionsPolicy::POLICY_SELF,
+    'display-capture'                 => PermissionsPolicy::POLICY_SELF,
+    'document-domain'                 => PermissionsPolicy::POLICY_ANY,
+    'encrypted-media'                 => PermissionsPolicy::POLICY_SELF,
+    'execution-while-not-rendered'    => PermissionsPolicy::POLICY_ANY,
+    'execution-while-out-of-viewport' => PermissionsPolicy::POLICY_ANY,
+    'fullscreen'                      => PermissionsPolicy::POLICY_SELF,
+    'geolocation'                     => PermissionsPolicy::POLICY_SELF,
+    'gyroscope'                       => PermissionsPolicy::POLICY_SELF,
+    'magnetometer'                    => PermissionsPolicy::POLICY_SELF,
+    'microphone'                      => PermissionsPolicy::POLICY_SELF,
+    'midi'                            => PermissionsPolicy::POLICY_SELF,
+    'navigation-override'             => PermissionsPolicy::POLICY_SELF,
+    'payment'                         => PermissionsPolicy::POLICY_SELF,
+    'picture-in-picture'              => PermissionsPolicy::POLICY_ANY,
+    'publickey-credentials-get'       => PermissionsPolicy::POLICY_SELF,
+    'screen-wake-lock'                => PermissionsPolicy::POLICY_SELF,
+    // 'sync-xhr'                        => PermissionsPolicy::POLICY_SELF,
+    'usb'                             => PermissionsPolicy::POLICY_SELF,
+    'web-share'                       => PermissionsPolicy::POLICY_SELF,
+    'xr-spatial-tracking'             => PermissionsPolicy::POLICY_SELF,
+
+    // Proposed Features.
+    'clipboard-read'                  => PermissionsPolicy::POLICY_SELF,
+    'clipboard-write'                 => PermissionsPolicy::POLICY_SELF,
+    'gamepad'                         => PermissionsPolicy::POLICY_SELF,
+    'speaker-selection'               => PermissionsPolicy::POLICY_SELF,
+
+    // Experimental Features.
+    // 'conversion-measurement'          => PermissionsPolicy::POLICY_SELF,
+    // 'focus-without-user-activation'   => PermissionsPolicy::POLICY_SELF,
+    'hid'                             => PermissionsPolicy::POLICY_SELF,
+    'idle-detection'                  => PermissionsPolicy::POLICY_SELF,
+    // 'interest-cohort'                 => PermissionsPolicy::POLICY_SELF,
+    // 'serial'                          => PermissionsPolicy::POLICY_SELF,
+    // 'sync-script'                     => PermissionsPolicy::POLICY_SELF,
+    // 'trust-token-redemption'          => PermissionsPolicy::POLICY_SELF,
+    'vertical-scroll'                 => PermissionsPolicy::POLICY_ANY,
+  ];
+
   /**
    * The policy directives.
    *
