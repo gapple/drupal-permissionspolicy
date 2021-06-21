@@ -4,7 +4,10 @@ namespace Drupal\permissionspolicy\EventSubscriber;
 
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\permissionspolicy\Event\PolicyAlterEvent;
 use Drupal\permissionspolicy\PermissionsPolicy;
+use Drupal\permissionspolicy\PermissionsPolicyEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -22,15 +25,26 @@ class ResponseSubscriber implements EventSubscriberInterface {
   protected $configFactory;
 
   /**
+   * The Event Dispatcher service.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected $eventDispatcher;
+
+  /**
    * Constructs a new ResponseSubscriber object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   Config Factory service.
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+   *   Event Dispatcher service.
    */
   public function __construct(
-    ConfigFactoryInterface $configFactory
+    ConfigFactoryInterface $configFactory,
+    EventDispatcherInterface $eventDispatcher
   ) {
     $this->configFactory = $configFactory;
+    $this->eventDispatcher = $eventDispatcher;
   }
 
   /**
@@ -92,6 +106,11 @@ class ResponseSubscriber implements EventSubscriberInterface {
           $policy->appendFeature($featureName, $featureOptions['sources']);
         }
       }
+
+      $this->eventDispatcher->dispatch(
+        PermissionsPolicyEvents::POLICY_ALTER,
+        new PolicyAlterEvent($policy, $response)
+      );
 
       if (($headerValue = $policy->getHeaderValue())) {
         $response->headers->set($policy->getHeaderName(), $headerValue);
