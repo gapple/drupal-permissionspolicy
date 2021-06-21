@@ -71,25 +71,25 @@ class ResponseSubscriber implements EventSubscriberInterface {
       foreach (($fpConfig->get($policyType . '.directives') ?: []) as $directiveName => $directiveOptions) {
         switch ($directiveOptions['base']) {
           case 'self':
-            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_SELF]);
+            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_SELF]);
             break;
 
           case 'none':
-            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_NONE]);
+            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_NONE]);
             break;
 
           case 'any':
-            $policy->setDirective($directiveName, [PermissionsPolicy::POLICY_ANY]);
+            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_ANY]);
             break;
 
           default:
             // Initialize to an empty value so that any alter subscribers can
             // tell that this directive was enabled.
-            $policy->setDirective($directiveName, []);
+            $policy->setFeature($directiveName, []);
         }
 
         if (!empty($directiveOptions['sources'])) {
-          $policy->appendDirective($directiveName, $directiveOptions['sources']);
+          $policy->appendFeature($directiveName, $directiveOptions['sources']);
         }
       }
 

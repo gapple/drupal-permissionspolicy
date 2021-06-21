@@ -55,7 +55,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
    *   An array of directive names.
    */
   private function getConfigurableDirectives() {
-    $directives = PermissionsPolicy::getDirectiveNames();
+    $directives = PermissionsPolicy::getFeatureNames();
 
     // Reorder directives so they're not grouped by status on the form
     // (standardized, proposed, experimental).
@@ -141,10 +141,10 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
         if (
           $sourceListBase === NULL
           &&
-          !empty(PermissionsPolicy::DIRECTIVE_DEFAULT_ALLOWLIST[$directiveName])
+          !empty(PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$directiveName])
         ) {
-          $sourceListBase = PermissionsPolicy::DIRECTIVE_DEFAULT_ALLOWLIST[$directiveName];
-          if ($sourceListBase == PermissionsPolicy::POLICY_ANY) {
+          $sourceListBase = PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$directiveName];
+          if ($sourceListBase == PermissionsPolicy::ORIGIN_ANY) {
             $sourceListBase = 'any';
           }
         }
@@ -196,7 +196,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $policyTypes = array_keys($this->getPolicyTypes());
-    $directiveNames = PermissionsPolicy::getDirectiveNames();
+    $directiveNames = PermissionsPolicy::getFeatureNames();
     foreach ($policyTypes as $policyTypeKey) {
       foreach ($directiveNames as $directiveName) {
         if (($directiveSources = $form_state->getValue([$policyTypeKey, 'directives', $directiveName, 'sources']))) {
@@ -259,7 +259,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('permissionspolicy.settings');
 
-    $directiveNames = PermissionsPolicy::getDirectiveNames();
+    $directiveNames = PermissionsPolicy::getFeatureNames();
     $policyTypes = array_keys($this->getPolicyTypes());
     foreach ($policyTypes as $policyTypeKey) {
       $config->clear($policyTypeKey);

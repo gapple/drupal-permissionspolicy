@@ -10,12 +10,12 @@ use gapple\StructuredFields\Token;
  */
 class PermissionsPolicy {
 
-  public const POLICY_ANY = '*';
-  public const POLICY_NONE = 'none';
-  public const POLICY_SELF = 'self';
+  public const ORIGIN_ANY = '*';
+  public const ORIGIN_NONE = 'none';
+  public const ORIGIN_SELF = 'self';
 
   // https://www.w3.org/TR/permissions-policy-1/#allowlists
-  public const DIRECTIVE_SCHEMA_ALLOWLIST = 'allowlist';
+  public const FEATURE_SCHEMA_ALLOWLIST = 'allowlist';
 
   /**
    * The schema type for each directive.
@@ -24,249 +24,248 @@ class PermissionsPolicy {
    *
    * @var array
    */
-  public const DIRECTIVES = [
+  public const FEATURES = [
     // Standardized Features.
-    'accelerometer'                   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'ambient-light-sensor'            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'autoplay'                        => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'battery'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'camera'                          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'cross-origin-isolated'           => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'display-capture'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'document-domain'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'encrypted-media'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'execution-while-not-rendered'    => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'execution-while-out-of-viewport' => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'fullscreen'                      => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'geolocation'                     => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'gyroscope'                       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'magnetometer'                    => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'microphone'                      => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'midi'                            => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'navigation-override'             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'payment'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'picture-in-picture'              => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'publickey-credentials-get'       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'screen-wake-lock'                => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'sync-xhr'                        => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'usb'                             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'web-share'                       => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'xr-spatial-tracking'             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'accelerometer'                   => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'ambient-light-sensor'            => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'autoplay'                        => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'battery'                         => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'camera'                          => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'cross-origin-isolated'           => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'display-capture'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'document-domain'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'encrypted-media'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'execution-while-not-rendered'    => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'execution-while-out-of-viewport' => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'fullscreen'                      => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'geolocation'                     => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'gyroscope'                       => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'magnetometer'                    => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'microphone'                      => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'midi'                            => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'navigation-override'             => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'payment'                         => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'picture-in-picture'              => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'publickey-credentials-get'       => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'screen-wake-lock'                => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'sync-xhr'                        => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'usb'                             => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'web-share'                       => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'xr-spatial-tracking'             => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
 
     // Proposed Features.
-    'clipboard-read'                  => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'clipboard-write'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'gamepad'                         => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'speaker-selection'               => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'clipboard-read'                  => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'clipboard-write'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'gamepad'                         => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'speaker-selection'               => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
 
     // Experimental Features.
-    'conversion-measurement'          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'focus-without-user-activation'   => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'hid'                             => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'idle-detection'                  => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'interest-cohort'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'serial'                          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'sync-script'                     => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'trust-token-redemption'          => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
-    'vertical-scroll'                 => PermissionsPolicy::DIRECTIVE_SCHEMA_ALLOWLIST,
+    'conversion-measurement'          => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'focus-without-user-activation'   => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'hid'                             => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'idle-detection'                  => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'interest-cohort'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'serial'                          => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'sync-script'                     => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'trust-token-redemption'          => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'vertical-scroll'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
   ];
-
 
   /**
    * A map of default allowlist values for each directive.
    *
    * @var array
    */
-  public const DIRECTIVE_DEFAULT_ALLOWLIST = [
+  public const FEATURE_DEFAULT_ALLOWLIST = [
     // Standardized Features.
-    'accelerometer'                   => PermissionsPolicy::POLICY_SELF,
-    'ambient-light-sensor'            => PermissionsPolicy::POLICY_SELF,
-    'autoplay'                        => PermissionsPolicy::POLICY_SELF,
-    'battery'                         => PermissionsPolicy::POLICY_SELF,
-    'camera'                          => PermissionsPolicy::POLICY_SELF,
-    'cross-origin-isolated'           => PermissionsPolicy::POLICY_SELF,
-    'display-capture'                 => PermissionsPolicy::POLICY_SELF,
-    'document-domain'                 => PermissionsPolicy::POLICY_ANY,
-    'encrypted-media'                 => PermissionsPolicy::POLICY_SELF,
-    'execution-while-not-rendered'    => PermissionsPolicy::POLICY_ANY,
-    'execution-while-out-of-viewport' => PermissionsPolicy::POLICY_ANY,
-    'fullscreen'                      => PermissionsPolicy::POLICY_SELF,
-    'geolocation'                     => PermissionsPolicy::POLICY_SELF,
-    'gyroscope'                       => PermissionsPolicy::POLICY_SELF,
-    'magnetometer'                    => PermissionsPolicy::POLICY_SELF,
-    'microphone'                      => PermissionsPolicy::POLICY_SELF,
-    'midi'                            => PermissionsPolicy::POLICY_SELF,
-    'navigation-override'             => PermissionsPolicy::POLICY_SELF,
-    'payment'                         => PermissionsPolicy::POLICY_SELF,
-    'picture-in-picture'              => PermissionsPolicy::POLICY_ANY,
-    'publickey-credentials-get'       => PermissionsPolicy::POLICY_SELF,
-    'screen-wake-lock'                => PermissionsPolicy::POLICY_SELF,
-    // 'sync-xhr'                        => PermissionsPolicy::POLICY_SELF,
-    'usb'                             => PermissionsPolicy::POLICY_SELF,
-    'web-share'                       => PermissionsPolicy::POLICY_SELF,
-    'xr-spatial-tracking'             => PermissionsPolicy::POLICY_SELF,
+    'accelerometer'                   => PermissionsPolicy::ORIGIN_SELF,
+    'ambient-light-sensor'            => PermissionsPolicy::ORIGIN_SELF,
+    'autoplay'                        => PermissionsPolicy::ORIGIN_SELF,
+    'battery'                         => PermissionsPolicy::ORIGIN_SELF,
+    'camera'                          => PermissionsPolicy::ORIGIN_SELF,
+    'cross-origin-isolated'           => PermissionsPolicy::ORIGIN_SELF,
+    'display-capture'                 => PermissionsPolicy::ORIGIN_SELF,
+    'document-domain'                 => PermissionsPolicy::ORIGIN_ANY,
+    'encrypted-media'                 => PermissionsPolicy::ORIGIN_SELF,
+    'execution-while-not-rendered'    => PermissionsPolicy::ORIGIN_ANY,
+    'execution-while-out-of-viewport' => PermissionsPolicy::ORIGIN_ANY,
+    'fullscreen'                      => PermissionsPolicy::ORIGIN_SELF,
+    'geolocation'                     => PermissionsPolicy::ORIGIN_SELF,
+    'gyroscope'                       => PermissionsPolicy::ORIGIN_SELF,
+    'magnetometer'                    => PermissionsPolicy::ORIGIN_SELF,
+    'microphone'                      => PermissionsPolicy::ORIGIN_SELF,
+    'midi'                            => PermissionsPolicy::ORIGIN_SELF,
+    'navigation-override'             => PermissionsPolicy::ORIGIN_SELF,
+    'payment'                         => PermissionsPolicy::ORIGIN_SELF,
+    'picture-in-picture'              => PermissionsPolicy::ORIGIN_ANY,
+    'publickey-credentials-get'       => PermissionsPolicy::ORIGIN_SELF,
+    'screen-wake-lock'                => PermissionsPolicy::ORIGIN_SELF,
+    // 'sync-xhr'                        => PermissionsPolicy::ORIGIN_SELF,
+    'usb'                             => PermissionsPolicy::ORIGIN_SELF,
+    'web-share'                       => PermissionsPolicy::ORIGIN_SELF,
+    'xr-spatial-tracking'             => PermissionsPolicy::ORIGIN_SELF,
 
     // Proposed Features.
-    'clipboard-read'                  => PermissionsPolicy::POLICY_SELF,
-    'clipboard-write'                 => PermissionsPolicy::POLICY_SELF,
-    'gamepad'                         => PermissionsPolicy::POLICY_SELF,
-    'speaker-selection'               => PermissionsPolicy::POLICY_SELF,
+    'clipboard-read'                  => PermissionsPolicy::ORIGIN_SELF,
+    'clipboard-write'                 => PermissionsPolicy::ORIGIN_SELF,
+    'gamepad'                         => PermissionsPolicy::ORIGIN_SELF,
+    'speaker-selection'               => PermissionsPolicy::ORIGIN_SELF,
 
     // Experimental Features.
-    // 'conversion-measurement'          => PermissionsPolicy::POLICY_SELF,
-    // 'focus-without-user-activation'   => PermissionsPolicy::POLICY_SELF,
-    'hid'                             => PermissionsPolicy::POLICY_SELF,
-    'idle-detection'                  => PermissionsPolicy::POLICY_SELF,
-    // 'interest-cohort'                 => PermissionsPolicy::POLICY_SELF,
-    // 'serial'                          => PermissionsPolicy::POLICY_SELF,
-    // 'sync-script'                     => PermissionsPolicy::POLICY_SELF,
-    // 'trust-token-redemption'          => PermissionsPolicy::POLICY_SELF,
-    'vertical-scroll'                 => PermissionsPolicy::POLICY_ANY,
+    // 'conversion-measurement'          => PermissionsPolicy::ORIGIN_SELF,
+    // 'focus-without-user-activation'   => PermissionsPolicy::ORIGIN_SELF,
+    'hid'                             => PermissionsPolicy::ORIGIN_SELF,
+    'idle-detection'                  => PermissionsPolicy::ORIGIN_SELF,
+    // 'interest-cohort'                 => PermissionsPolicy::ORIGIN_SELF,
+    // 'serial'                          => PermissionsPolicy::ORIGIN_SELF,
+    // 'sync-script'                     => PermissionsPolicy::ORIGIN_SELF,
+    // 'trust-token-redemption'          => PermissionsPolicy::ORIGIN_SELF,
+    'vertical-scroll'                 => PermissionsPolicy::ORIGIN_ANY,
   ];
 
   /**
-   * The policy directives.
+   * The policy features.
    *
    * @var array
    */
-  protected $directives = [];
+  protected $features = [];
 
   /**
-   * Check if a directive name is valid.
+   * Check if a feature name is valid.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    *
    * @return bool
-   *   True if the directive name is valid.
+   *   True if the feature name is valid.
    */
-  public static function isValidDirectiveName(string $name): bool {
-    return array_key_exists($name, static::DIRECTIVES);
+  public static function isValidFeatureName(string $name): bool {
+    return array_key_exists($name, static::FEATURES);
   }
 
   /**
-   * Check if a directive name is valid, throwing an exception if not.
+   * Check if a feature name is valid, throwing an exception if not.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    *
    * @throws \InvalidArgumentException
    */
-  private static function validateDirectiveName(string $name): void {
-    if (!static::isValidDirectiveName($name)) {
+  private static function validateFeatureName(string $name): void {
+    if (!static::isValidFeatureName($name)) {
       throw new \InvalidArgumentException("Invalid directive name provided");
     }
   }
 
   /**
-   * Get the valid directive names.
+   * Get the valid feature names.
    *
    * @return string[]
-   *   An array of directive names.
+   *   An array of feature names.
    */
-  public static function getDirectiveNames(): array {
-    return array_keys(self::DIRECTIVES);
+  public static function getFeatureNames(): array {
+    return array_keys(self::FEATURES);
   }
 
   /**
-   * Get the schema constant for a directive.
+   * Get the schema constant for a feature.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    *
    * @return string
-   *   A DIRECTIVE_SCHEMA_* constant value
+   *   A FEATURE_SCHEMA_* constant value
    */
-  public static function getDirectiveSchema(string $name): string {
-    self::validateDirectiveName($name);
+  public static function getFeatureSchema(string $name): string {
+    self::validateFeatureName($name);
 
-    return self::DIRECTIVES[$name];
+    return self::FEATURES[$name];
   }
 
   /**
-   * Check if the policy currently has the specified directive.
+   * Check if the policy currently has the specified feature.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    *
    * @return bool
-   *   If the policy has the specified directive.
+   *   If the policy has the specified feature.
    */
-  public function hasDirective(string $name): bool {
-    return isset($this->directives[$name]);
+  public function hasFeature(string $name): bool {
+    return isset($this->features[$name]);
   }
 
   /**
-   * Get the value of a directive.
+   * Get the value of a feature.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    *
    * @return string[]
-   *   The directive's values.
+   *   The feature's values.
    */
-  public function getDirective(string $name): array {
-    self::validateDirectiveName($name);
+  public function getFeature(string $name): array {
+    self::validateFeatureName($name);
 
-    return $this->directives[$name];
+    return $this->features[$name];
   }
 
   /**
-   * Add a new directive to the policy, or replace an existing directive.
+   * Add a new feature to the policy, or replace an existing feature value.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    * @param array|string $value
-   *   The directive value.
+   *   The feature value.
    */
-  public function setDirective(string $name, $value): void {
-    self::validateDirectiveName($name);
+  public function setFeature(string $name, $value): void {
+    self::validateFeatureName($name);
 
-    $this->directives[$name] = [];
+    $this->features[$name] = [];
     if (empty($value)) {
       return;
     }
-    $this->appendDirective($name, $value);
+    $this->appendFeature($name, $value);
   }
 
   /**
-   * Append values to an existing directive.
+   * Append values to an existing feature.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    * @param array|string $value
-   *   The directive value.
+   *   The feature value.
    */
-  public function appendDirective(string $name, $value): void {
-    self::validateDirectiveName($name);
+  public function appendFeature(string $name, $value): void {
+    self::validateFeatureName($name);
 
     if (gettype($value) === 'string') {
       $value = explode(' ', $value);
     }
     elseif (gettype($value) !== 'array') {
-      throw new \InvalidArgumentException("Invalid directive value provided");
+      throw new \InvalidArgumentException("Invalid feature value provided");
     }
 
-    if (!isset($this->directives[$name])) {
-      $this->directives[$name] = [];
+    if (!isset($this->features[$name])) {
+      $this->features[$name] = [];
     }
 
-    $this->directives[$name] = array_merge(
-      $this->directives[$name],
+    $this->features[$name] = array_merge(
+      $this->features[$name],
       array_filter($value)
     );
   }
 
   /**
-   * Remove a directive from the policy.
+   * Remove a feature from the policy.
    *
    * @param string $name
-   *   The directive name.
+   *   The feature name.
    */
-  public function removeDirective(string $name): void {
-    self::validateDirectiveName($name);
+  public function removeFeature(string $name): void {
+    self::validateFeatureName($name);
 
-    unset($this->directives[$name]);
+    unset($this->features[$name]);
   }
 
   /**
@@ -288,16 +287,16 @@ class PermissionsPolicy {
   public function getHeaderValue(): string {
     $output = new \stdClass();
 
-    ksort($this->directives);
+    ksort($this->features);
 
-    foreach ($this->directives as $name => $value) {
+    foreach ($this->features as $name => $value) {
       // Convert to Structured Fields inner list.
       $allowlist = array_map(function ($item) {
-        if (in_array($item, [self::POLICY_ANY, self::POLICY_SELF])) {
+        if (in_array($item, [self::ORIGIN_ANY, self::ORIGIN_SELF])) {
           $item = new Token($item);
         }
         return [$item, new \stdClass()];
-      }, self::reduceSourceList($value));
+      }, self::reduceAllowlist($value));
 
       if (count($allowlist) == 1) {
         $output->{$name} = reset($allowlist);
@@ -311,42 +310,42 @@ class PermissionsPolicy {
   }
 
   /**
-   * Reduce a list of sources to a minimal set.
+   * Reduce a list of origins to a minimal set.
    *
-   * @param array $sources
-   *   The array of sources.
+   * @param array $origins
+   *   The array of origins.
    *
    * @return string[]
-   *   The reduced set of sources.
+   *   The reduced set of origins.
    */
-  private static function reduceSourceList(array $sources): array {
-    $sources = array_unique($sources);
+  private static function reduceAllowlist(array $origins): array {
+    $origins = array_unique($origins);
 
     // 'none' overrides any other sources.
-    if (in_array(static::POLICY_NONE, $sources)) {
+    if (in_array(static::ORIGIN_NONE, $origins)) {
       return [];
     }
 
     // Global wildcard covers all network scheme sources.
-    if (in_array(static::POLICY_ANY, $sources)) {
-      return [static::POLICY_ANY];
+    if (in_array(static::ORIGIN_ANY, $origins)) {
+      return [static::ORIGIN_ANY];
     }
 
     // Remove protocol-prefixed hosts if protocol is allowed.
     // e.g. 'http: example.com https://example.com' -> 'http: example.com'.
-    $protocols = array_filter($sources, function ($source) {
+    $protocols = array_filter($origins, function ($source) {
       return preg_match('<^(https?):$>', $source);
     });
     if (!empty($protocols)) {
       if (in_array('http:', $protocols)) {
         $protocols[] = 'https:';
       }
-      $sources = array_filter($sources, function ($source) use ($protocols) {
+      $origins = array_filter($origins, function ($source) use ($protocols) {
         return !preg_match('<^(' . implode('|', $protocols) . ')//>', $source);
       });
     }
 
-    return $sources;
+    return $origins;
   }
 
   /**

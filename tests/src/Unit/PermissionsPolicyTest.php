@@ -16,49 +16,49 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that invalid directive names cause an exception.
    *
-   * @covers ::setDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::setFeature
+   * @covers ::isValidFeatureName
    * @covers ::validateDirectiveName
    */
   public function testSetInvalidPolicy() {
     $policy = new PermissionsPolicy();
 
     $this->expectException(\InvalidArgumentException::class);
-    $policy->setDirective('foo', PermissionsPolicy::POLICY_SELF);
+    $policy->setFeature('foo', PermissionsPolicy::ORIGIN_SELF);
   }
 
   /**
    * Test that invalid directive names cause an exception.
    *
-   * @covers ::appendDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::appendFeature
+   * @covers ::isValidFeatureName
    * @covers ::validateDirectiveName
    */
   public function testAppendInvalidPolicy() {
     $policy = new PermissionsPolicy();
 
     $this->expectException(\InvalidArgumentException::class);
-    $policy->appendDirective('foo', PermissionsPolicy::POLICY_SELF);
+    $policy->appendFeature('foo', PermissionsPolicy::ORIGIN_SELF);
   }
 
   /**
    * Test setting a single value to a directive.
    *
-   * @covers ::setDirective
-   * @covers ::hasDirective
-   * @covers ::getDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::setFeature
+   * @covers ::hasFeature
+   * @covers ::getFeature
+   * @covers ::isValidFeatureName
    * @covers ::validateDirectiveName
    * @covers ::getHeaderValue
    */
   public function testSetSingle() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', PermissionsPolicy::POLICY_SELF);
+    $policy->setFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
 
-    $this->assertTrue($policy->hasDirective('geolocation'));
+    $this->assertTrue($policy->hasFeature('geolocation'));
     $this->assertEquals(
-      $policy->getDirective('geolocation'),
+      $policy->getFeature('geolocation'),
       ['self']
     );
     $this->assertEquals(
@@ -70,21 +70,21 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test appending a single value to an uninitialized directive.
    *
-   * @covers ::appendDirective
-   * @covers ::hasDirective
-   * @covers ::getDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::appendFeature
+   * @covers ::hasFeature
+   * @covers ::getFeature
+   * @covers ::isValidFeatureName
    * @covers ::validateDirectiveName
    * @covers ::getHeaderValue
    */
   public function testAppendSingle() {
     $policy = new PermissionsPolicy();
 
-    $policy->appendDirective('geolocation', PermissionsPolicy::POLICY_SELF);
+    $policy->appendFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
 
-    $this->assertTrue($policy->hasDirective('geolocation'));
+    $this->assertTrue($policy->hasFeature('geolocation'));
     $this->assertEquals(
-      $policy->getDirective('geolocation'),
+      $policy->getFeature('geolocation'),
       ['self']
     );
     $this->assertEquals(
@@ -96,15 +96,15 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that a directive is overridden when set with a new value.
    *
-   * @covers ::setDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::setFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testSetMultiple() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', PermissionsPolicy::POLICY_ANY);
-    $policy->setDirective('geolocation', [PermissionsPolicy::POLICY_SELF, 'one.example.com']);
+    $policy->setFeature('geolocation', PermissionsPolicy::ORIGIN_ANY);
+    $policy->setFeature('geolocation', [PermissionsPolicy::ORIGIN_SELF, 'one.example.com']);
 
     $this->assertEquals(
       'geolocation=(self "one.example.com")',
@@ -115,16 +115,16 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that appending to a directive extends the existing value.
    *
-   * @covers ::appendDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::appendFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testAppendMultiple() {
     $policy = new PermissionsPolicy();
 
-    $policy->appendDirective('geolocation', PermissionsPolicy::POLICY_SELF);
-    $policy->appendDirective('camera', [PermissionsPolicy::POLICY_SELF, 'two.example.com']);
-    $policy->appendDirective('geolocation', 'one.example.com');
+    $policy->appendFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
+    $policy->appendFeature('camera', [PermissionsPolicy::ORIGIN_SELF, 'two.example.com']);
+    $policy->appendFeature('geolocation', 'one.example.com');
 
     $this->assertEquals(
       'camera=(self "two.example.com"), geolocation=(self "one.example.com")',
@@ -135,15 +135,15 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that setting an empty value removes a directive.
    *
-   * @covers ::setDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::setFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testSetEmpty() {
     $policy = new PermissionsPolicy();
-    $policy->setDirective('geolocation', PermissionsPolicy::POLICY_SELF);
-    $policy->setDirective('camera', [PermissionsPolicy::POLICY_SELF]);
-    $policy->setDirective('camera', []);
+    $policy->setFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
+    $policy->setFeature('camera', [PermissionsPolicy::ORIGIN_SELF]);
+    $policy->setFeature('camera', []);
 
     $this->assertEquals(
       "camera=(), geolocation=self",
@@ -152,9 +152,9 @@ class PermissionsPolicyTest extends UnitTestCase {
 
 
     $policy = new PermissionsPolicy();
-    $policy->setDirective('geolocation', PermissionsPolicy::POLICY_SELF);
-    $policy->setDirective('camera', [PermissionsPolicy::POLICY_SELF]);
-    $policy->setDirective('camera', '');
+    $policy->setFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
+    $policy->setFeature('camera', [PermissionsPolicy::ORIGIN_SELF]);
+    $policy->setFeature('camera', '');
 
     $this->assertEquals(
       "camera=(), geolocation=self",
@@ -165,22 +165,22 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that appending an empty value doesn't change the directive.
    *
-   * @covers ::appendDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::appendFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testAppendEmpty() {
     $policy = new PermissionsPolicy();
 
-    $policy->appendDirective('geolocation', PermissionsPolicy::POLICY_SELF);
+    $policy->appendFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
     $this->assertEquals(
       'geolocation=self',
       $policy->getHeaderValue()
     );
 
     //@todo should appending an empty value result in an empty list?
-    $policy->appendDirective('geolocation', '');
-    $policy->appendDirective('camera', []);
+    $policy->appendFeature('geolocation', '');
+    $policy->appendFeature('camera', []);
     $this->assertEquals(
       'camera=(), geolocation=self',
       $policy->getHeaderValue()
@@ -190,22 +190,22 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that source values are not repeated in the header.
    *
-   * @covers ::setDirective
-   * @covers ::appendDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::setFeature
+   * @covers ::appendFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testDuplicate() {
     $policy = new PermissionsPolicy();
 
     // Provide identical sources in an array.
-    $policy->setDirective('geolocation', [PermissionsPolicy::POLICY_SELF, PermissionsPolicy::POLICY_SELF]);
+    $policy->setFeature('geolocation', [PermissionsPolicy::ORIGIN_SELF, PermissionsPolicy::ORIGIN_SELF]);
     // Provide identical sources in a string.
-    $policy->setDirective('camera', 'one.example.com one.example.com');
+    $policy->setFeature('camera', 'one.example.com one.example.com');
 
     // Provide identical sources through both set and append.
-    $policy->setDirective('microphone', ['two.example.com', 'two.example.com']);
-    $policy->appendDirective('microphone', ['two.example.com', 'two.example.com']);
+    $policy->setFeature('microphone', ['two.example.com', 'two.example.com']);
+    $policy->appendFeature('microphone', ['two.example.com', 'two.example.com']);
 
     $this->assertEquals(
       'camera="one.example.com", geolocation=self, microphone="two.example.com"',
@@ -216,17 +216,17 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that removed directives are not output in the header.
    *
-   * @covers ::removeDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::removeFeature
+   * @covers ::isValidFeatureName
    * @covers ::getHeaderValue
    */
   public function testRemove() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', [PermissionsPolicy::POLICY_SELF]);
-    $policy->setDirective('camera', 'example.com');
+    $policy->setFeature('geolocation', [PermissionsPolicy::ORIGIN_SELF]);
+    $policy->setFeature('camera', 'example.com');
 
-    $policy->removeDirective('camera');
+    $policy->removeFeature('camera');
 
     $this->assertEquals(
       'geolocation=self',
@@ -237,27 +237,27 @@ class PermissionsPolicyTest extends UnitTestCase {
   /**
    * Test that removing an invalid directive name causes an exception.
    *
-   * @covers ::removeDirective
-   * @covers ::isValidDirectiveName
+   * @covers ::removeFeature
+   * @covers ::isValidFeatureName
    * @covers ::validateDirectiveName
    */
   public function testRemoveInvalid() {
     $policy = new PermissionsPolicy();
 
     $this->expectException(\InvalidArgumentException::class);
-    $policy->removeDirective('foo');
+    $policy->removeFeature('foo');
   }
 
   /**
    * Test that invalid directive values cause an exception.
    *
-   * @covers ::appendDirective
+   * @covers ::appendFeature
    */
   public function testInvalidValue() {
     $policy = new PermissionsPolicy();
 
     $this->expectException(\InvalidArgumentException::class);
-    $policy->appendDirective('geolocation', 12);
+    $policy->appendFeature('geolocation', 12);
   }
 
   /**
@@ -268,8 +268,8 @@ class PermissionsPolicyTest extends UnitTestCase {
   public function testReduceSourceListWithNone() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', [
-      PermissionsPolicy::POLICY_NONE,
+    $policy->setFeature('geolocation', [
+      PermissionsPolicy::ORIGIN_NONE,
       'example.com',
     ]);
     $this->assertEquals(
@@ -286,8 +286,8 @@ class PermissionsPolicyTest extends UnitTestCase {
   public function testReduceSourceListAny() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', [
-      PermissionsPolicy::POLICY_ANY,
+    $policy->setFeature('geolocation', [
+      PermissionsPolicy::ORIGIN_ANY,
       'example.com',
       'https://example.com',
       'http:',
@@ -307,7 +307,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   public function testReduceSourceListWithHttp() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', [
+    $policy->setFeature('geolocation', [
       'http:',
       // Hosts without protocol should be kept.
       // (e.g. this would allow ftp://example.com)
@@ -331,7 +331,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   public function testReduceSourceListWithHttps() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', [
+    $policy->setFeature('geolocation', [
       'https:',
       // Non-secure hosts should be kept.
       'example.com',
@@ -352,8 +352,8 @@ class PermissionsPolicyTest extends UnitTestCase {
   public function testToString() {
     $policy = new PermissionsPolicy();
 
-    $policy->setDirective('geolocation', PermissionsPolicy::POLICY_SELF);
-    $policy->setDirective('camera', [PermissionsPolicy::POLICY_SELF, 'example.com']);
+    $policy->setFeature('geolocation', PermissionsPolicy::ORIGIN_SELF);
+    $policy->setFeature('camera', [PermissionsPolicy::ORIGIN_SELF, 'example.com']);
 
     $this->assertEquals(
       'Permissions-Policy: camera=(self "example.com"), geolocation=self',
