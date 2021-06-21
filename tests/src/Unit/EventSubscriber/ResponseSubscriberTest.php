@@ -6,6 +6,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Tests\UnitTestCase;
 use Drupal\permissionspolicy\EventSubscriber\ResponseSubscriber;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -29,6 +30,13 @@ class ResponseSubscriberTest extends UnitTestCase {
    * @var \Symfony\Component\HttpKernel\Event\FilterResponseEvent|\PHPUnit_Framework_MockObject_MockObject
    */
   protected $event;
+
+  /**
+   * The Event Dispatcher Service.
+   *
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  private $eventDispatcher;
 
   /**
    * {@inheritdoc}
@@ -57,6 +65,10 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->event->expects($this->any())
       ->method('getResponse')
       ->willReturn($this->response);
+
+    $this->eventDispatcher = $this->getMockBuilder(EventDispatcher::class)
+      ->disableOriginalConstructor()
+      ->getMock();
   }
 
   /**
@@ -83,7 +95,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       ],
     ]);
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $this->response->headers->expects($this->never())
       ->method('set');
@@ -116,7 +128,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       ],
     ]);
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $this->response->headers->expects($this->never())
       ->method('set');
@@ -156,7 +168,7 @@ class ResponseSubscriberTest extends UnitTestCase {
         $this->equalTo('geolocation=self')
       );
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $subscriber->onKernelResponse($this->event);
   }
@@ -192,7 +204,7 @@ class ResponseSubscriberTest extends UnitTestCase {
         $this->equalTo('camera=self, geolocation=self')
       );
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $subscriber->onKernelResponse($this->event);
   }
@@ -228,7 +240,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->headers->expects($this->never())
       ->method('set');
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $subscriber->onKernelResponse($this->event);
   }
@@ -264,7 +276,7 @@ class ResponseSubscriberTest extends UnitTestCase {
     $this->response->headers->expects($this->never())
       ->method('set');
 
-    $subscriber = new ResponseSubscriber($configFactory);
+    $subscriber = new ResponseSubscriber($configFactory, $this->eventDispatcher);
 
     $subscriber->onKernelResponse($this->event);
   }
