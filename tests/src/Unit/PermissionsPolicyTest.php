@@ -14,7 +14,7 @@ use Drupal\Tests\UnitTestCase;
 class PermissionsPolicyTest extends UnitTestCase {
 
   /**
-   * Test that invalid directive names cause an exception.
+   * Test that invalid feature names cause an exception.
    *
    * @covers ::setFeature
    * @covers ::isValidFeatureName
@@ -28,7 +28,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that invalid directive names cause an exception.
+   * Test that invalid feature names cause an exception.
    *
    * @covers ::appendFeature
    * @covers ::isValidFeatureName
@@ -42,7 +42,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test setting a single value to a directive.
+   * Test setting a single value to a feature.
    *
    * @covers ::setFeature
    * @covers ::hasFeature
@@ -68,7 +68,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test appending a single value to an uninitialized directive.
+   * Test appending a single value to an uninitialized feature.
    *
    * @covers ::appendFeature
    * @covers ::hasFeature
@@ -94,7 +94,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that a directive is overridden when set with a new value.
+   * Test that a feature is overridden when set with a new value.
    *
    * @covers ::setFeature
    * @covers ::isValidFeatureName
@@ -113,7 +113,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that appending to a directive extends the existing value.
+   * Test that appending to a feature extends the existing value.
    *
    * @covers ::appendFeature
    * @covers ::isValidFeatureName
@@ -133,7 +133,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that setting an empty value removes a directive.
+   * Test that setting an empty value removes a feature.
    *
    * @covers ::setFeature
    * @covers ::isValidFeatureName
@@ -163,7 +163,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that appending an empty value doesn't change the directive.
+   * Test that appending an empty value doesn't change the feature.
    *
    * @covers ::appendFeature
    * @covers ::isValidFeatureName
@@ -214,7 +214,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that removed directives are not output in the header.
+   * Test that removed features are not output in the header.
    *
    * @covers ::removeFeature
    * @covers ::isValidFeatureName
@@ -235,7 +235,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that removing an invalid directive name causes an exception.
+   * Test that removing an invalid feature name causes an exception.
    *
    * @covers ::removeFeature
    * @covers ::isValidFeatureName
@@ -249,7 +249,7 @@ class PermissionsPolicyTest extends UnitTestCase {
   }
 
   /**
-   * Test that invalid directive values cause an exception.
+   * Test that invalid feature values cause an exception.
    *
    * @covers ::appendFeature
    */

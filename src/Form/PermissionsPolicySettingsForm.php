@@ -49,19 +49,19 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
   }
 
   /**
-   * Get the directives that should be configurable.
+   * Get the features that should be configurable.
    *
    * @return array
-   *   An array of directive names.
+   *   An array of feature names.
    */
-  private function getConfigurableDirectives() {
-    $directives = PermissionsPolicy::getFeatureNames();
+  private function getConfigurableFeatures() {
+    $features = PermissionsPolicy::getFeatureNames();
 
-    // Reorder directives so they're not grouped by status on the form
+    // Reorder features so they're not grouped by status on the form
     // (standardized, proposed, experimental).
-    sort($directives);
+    sort($features);
 
-    return $directives;
+    return $features;
   }
 
   /**
@@ -89,7 +89,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
       '#title' => $this->t('Policies'),
     ];
 
-    $directiveNames = static::getConfigurableDirectives();
+    $featureNames = static::getConfigurableFeatures();
 
     $policyTypes = $this->getPolicyTypes();
     foreach ($policyTypes as $policyTypeKey => $policyTypeName) {
@@ -110,47 +110,47 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
         '#default_value' => $config->get($policyTypeKey . '.enable'),
       ];
 
-      $form[$policyTypeKey]['directives'] = [
+      $form[$policyTypeKey]['features'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Directives'),
+        '#title' => $this->t('Features'),
         '#description_display' => 'before',
         '#tree' => TRUE,
       ];
 
-      foreach ($directiveNames as $directiveName) {
-        $form[$policyTypeKey]['directives'][$directiveName] = [
+      foreach ($featureNames as $featureName) {
+        $form[$policyTypeKey]['features'][$featureName] = [
           '#type' => 'container',
         ];
 
-        $form[$policyTypeKey]['directives'][$directiveName]['enable'] = [
+        $form[$policyTypeKey]['features'][$featureName]['enable'] = [
           '#type' => 'checkbox',
-          '#title' => $directiveName,
-          '#default_value' => !is_null($config->get($policyTypeKey . '.directives.' . $directiveName)),
+          '#title' => $featureName,
+          '#default_value' => !is_null($config->get($policyTypeKey . '.features.' . $featureName)),
         ];
 
-        $form[$policyTypeKey]['directives'][$directiveName]['options'] = [
+        $form[$policyTypeKey]['features'][$featureName]['options'] = [
           '#type' => 'container',
           '#states' => [
             'visible' => [
-              ':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][enable]"]' => ['checked' => TRUE],
+              ':input[name="' . $policyTypeKey . '[features][' . $featureName . '][enable]"]' => ['checked' => TRUE],
             ],
           ],
         ];
 
-        $sourceListBase = $config->get($policyTypeKey . '.directives.' . $directiveName . '.base');
+        $sourceListBase = $config->get($policyTypeKey . '.features.' . $featureName . '.base');
         if (
           $sourceListBase === NULL
           &&
-          !empty(PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$directiveName])
+          !empty(PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$featureName])
         ) {
-          $sourceListBase = PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$directiveName];
+          $sourceListBase = PermissionsPolicy::FEATURE_DEFAULT_ALLOWLIST[$featureName];
           if ($sourceListBase == PermissionsPolicy::ORIGIN_ANY) {
             $sourceListBase = 'any';
           }
         }
-        $form[$policyTypeKey]['directives'][$directiveName]['options']['base'] = [
+        $form[$policyTypeKey]['features'][$featureName]['options']['base'] = [
           '#type' => 'radios',
-          '#parents' => [$policyTypeKey, 'directives', $directiveName, 'base'],
+          '#parents' => [$policyTypeKey, 'features', $featureName, 'base'],
           '#options' => [
             'none' => "None",
             'empty' => '<em>empty</em>',
@@ -160,17 +160,17 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
           '#default_value' => $sourceListBase ?: 'empty',
         ];
 
-        $form[$policyTypeKey]['directives'][$directiveName]['options']['sources'] = [
+        $form[$policyTypeKey]['features'][$featureName]['options']['sources'] = [
           '#type' => 'textarea',
-          '#parents' => [$policyTypeKey, 'directives', $directiveName, 'sources'],
+          '#parents' => [$policyTypeKey, 'features', $featureName, 'sources'],
           '#title' => $this->t('Additional Sources'),
-          '#description' => $this->t('Additional domains or protocols to allow for this directive.'),
-          '#default_value' => implode(' ', $config->get($policyTypeKey . '.directives.' . $directiveName . '.sources') ?: []),
+          '#description' => $this->t('Additional domains to allow for this feature.'),
+          '#default_value' => implode(' ', $config->get($policyTypeKey . '.features.' . $featureName . '.sources') ?: []),
           '#states' => [
             'visible' => [
-              [':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][base]"]' => ['value' => 'self']],
+              [':input[name="' . $policyTypeKey . '[features][' . $featureName . '][base]"]' => ['value' => 'self']],
               'or',
-              [':input[name="' . $policyTypeKey . '[directives][' . $directiveName . '][base]"]' => ['value' => 'empty']],
+              [':input[name="' . $policyTypeKey . '[features][' . $featureName . '][base]"]' => ['value' => 'empty']],
             ],
           ],
         ];
@@ -196,12 +196,12 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $policyTypes = array_keys($this->getPolicyTypes());
-    $directiveNames = PermissionsPolicy::getFeatureNames();
+    $featureNames = PermissionsPolicy::getFeatureNames();
     foreach ($policyTypes as $policyTypeKey) {
-      foreach ($directiveNames as $directiveName) {
-        if (($directiveSources = $form_state->getValue([$policyTypeKey, 'directives', $directiveName, 'sources']))) {
+      foreach ($featureNames as $featureName) {
+        if (($origins = $form_state->getValue([$policyTypeKey, 'features', $featureName, 'sources']))) {
           $invalidSources = array_reduce(
-            preg_split('/,?\s+/', $directiveSources),
+            preg_split('/,?\s+/', $origins),
             function ($return, $value) {
               return $return || !(preg_match('<^([a-z]+:)?$>', $value) || static::isValidHost($value));
             },
@@ -209,7 +209,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
             );
           if ($invalidSources) {
             $form_state->setError(
-              $form[$policyTypeKey]['directives'][$directiveName]['options']['sources'],
+              $form[$policyTypeKey]['features'][$featureName]['options']['sources'],
               $this->t('Invalid domain or protocol provided.')
               );
           }
@@ -259,7 +259,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('permissionspolicy.settings');
 
-    $directiveNames = PermissionsPolicy::getFeatureNames();
+    $featureNames = PermissionsPolicy::getFeatureNames();
     $policyTypes = array_keys($this->getPolicyTypes());
     foreach ($policyTypes as $policyTypeKey) {
       $config->clear($policyTypeKey);
@@ -268,31 +268,31 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
 
       $config->set($policyTypeKey . '.enable', !empty($policyFormData['enable']));
 
-      foreach ($directiveNames as $directiveName) {
-        if (empty($policyFormData['directives'][$directiveName])) {
+      foreach ($featureNames as $featureName) {
+        if (empty($policyFormData['features'][$featureName])) {
           continue;
         }
 
-        $directiveFormData = $policyFormData['directives'][$directiveName];
-        $directiveOptions = [];
+        $featureFormData = $policyFormData['features'][$featureName];
+        $featureOptions = [];
 
-        if (empty($directiveFormData['enable'])) {
+        if (empty($featureFormData['enable'])) {
           continue;
         }
 
-        if (in_array($directiveFormData['base'], ['empty', 'self'])) {
-          if (!empty($directiveFormData['sources'])) {
-            $directiveOptions['sources'] = array_filter(preg_split('/,?\s+/', $directiveFormData['sources']));
+        if (in_array($featureFormData['base'], ['empty', 'self'])) {
+          if (!empty($featureFormData['sources'])) {
+            $featureOptions['sources'] = array_filter(preg_split('/,?\s+/', $featureFormData['sources']));
           }
         }
 
-        $directiveOptions['base'] = $directiveFormData['base'];
-        if ($directiveFormData['base'] == 'empty') {
-          $directiveOptions['base'] = '';
+        $featureOptions['base'] = $featureFormData['base'];
+        if ($featureFormData['base'] == 'empty') {
+          $featureOptions['base'] = '';
         }
 
-        if (!empty($directiveOptions)) {
-          $config->set($policyTypeKey . '.directives.' . $directiveName, $directiveOptions);
+        if (!empty($featureOptions)) {
+          $config->set($policyTypeKey . '.features.' . $featureName, $featureOptions);
         }
       }
     }

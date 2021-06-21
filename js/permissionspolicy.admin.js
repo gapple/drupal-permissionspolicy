@@ -25,14 +25,14 @@
 
           $details.drupalSetSummary(function () {
             if ($details.find(createPolicyElementSelector('enable')).prop('checked')) {
-              var directiveCount = $details
-                .find(createPolicyElementSelector('directives') + ' [name$="[enable]"]:checked')
+              var featureCount = $details
+                .find(createPolicyElementSelector('features') + ' [name$="[enable]"]:checked')
                 .length;
               return Drupal.formatPlural(
-                directiveCount,
-                'Enabled, @directiveCount directive',
-                'Enabled, @directiveCount directives',
-                { '@directiveCount': directiveCount },
+                featureCount,
+                'Enabled, @featureCount feature',
+                'Enabled, @featureCount features',
+                { '@featureCount': featureCount },
               );
             }
 

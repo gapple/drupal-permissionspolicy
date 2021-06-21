@@ -42,7 +42,7 @@ class ResponseSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Add Feature-Policy header to response.
+   * Add Permissions-Policy header to response.
    *
    * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The Response event.
@@ -68,28 +68,28 @@ class ResponseSubscriber implements EventSubscriberInterface {
 
       $policy = new PermissionsPolicy();
 
-      foreach (($fpConfig->get($policyType . '.directives') ?: []) as $directiveName => $directiveOptions) {
-        switch ($directiveOptions['base']) {
+      foreach (($fpConfig->get($policyType . '.features') ?: []) as $featureName => $featureOptions) {
+        switch ($featureOptions['base']) {
           case 'self':
-            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_SELF]);
+            $policy->setFeature($featureName, [PermissionsPolicy::ORIGIN_SELF]);
             break;
 
           case 'none':
-            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_NONE]);
+            $policy->setFeature($featureName, [PermissionsPolicy::ORIGIN_NONE]);
             break;
 
           case 'any':
-            $policy->setFeature($directiveName, [PermissionsPolicy::ORIGIN_ANY]);
+            $policy->setFeature($featureName, [PermissionsPolicy::ORIGIN_ANY]);
             break;
 
           default:
             // Initialize to an empty value so that any alter subscribers can
-            // tell that this directive was enabled.
-            $policy->setFeature($directiveName, []);
+            // tell that this feature was enabled.
+            $policy->setFeature($featureName, []);
         }
 
-        if (!empty($directiveOptions['sources'])) {
-          $policy->appendFeature($directiveName, $directiveOptions['sources']);
+        if (!empty($featureOptions['sources'])) {
+          $policy->appendFeature($featureName, $featureOptions['sources']);
         }
       }
 

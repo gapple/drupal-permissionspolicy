@@ -69,7 +69,7 @@ class ResponseSubscriberTest extends UnitTestCase {
   }
 
   /**
-   * An empty or missing directive list should not output a header.
+   * An empty or missing feature list should not output a header.
    *
    * @covers ::onKernelResponse
    */
@@ -107,7 +107,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => FALSE,
-          'directives' => [
+          'features' => [
             'geolocation' => [
               'base' => 'self',
             ],
@@ -129,7 +129,7 @@ class ResponseSubscriberTest extends UnitTestCase {
   }
 
   /**
-   * Test a single directive.
+   * Test a single feature.
    *
    * @covers ::onKernelResponse
    */
@@ -140,7 +140,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
-          'directives' => [
+          'features' => [
             'geolocation' => [
               'base' => 'self',
             ],
@@ -162,7 +162,7 @@ class ResponseSubscriberTest extends UnitTestCase {
   }
 
   /**
-   * Test a multiple directives.
+   * Test a multiple features.
    *
    * @covers ::onKernelResponse
    */
@@ -173,7 +173,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
-          'directives' => [
+          'features' => [
             'geolocation' => [
               'base' => 'self',
             ],
@@ -209,7 +209,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => TRUE,
-          'directives' => [],
+          'features' => [],
         ],
       ],
     ]);
@@ -245,7 +245,7 @@ class ResponseSubscriberTest extends UnitTestCase {
       'permissionspolicy.settings' => [
         'enforce' => [
           'enable' => FALSE,
-          'directives' => [],
+          'features' => [],
         ],
       ],
     ]);
