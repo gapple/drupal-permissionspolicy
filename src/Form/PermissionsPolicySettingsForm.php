@@ -216,7 +216,7 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
   private static function isValidHost($url) {
     return (bool) preg_match("
         /^                                                      # Start at the beginning of the text
-        (?:https?:\/\/)?                                        # Look for http or https schemes (optional)
+        (?:[a-z][a-z0-9\-.+]+:\/\/)?                            # Scheme (optional)
         (?:
           (?:                                                   # A domain name or a IPv4 address
             (?:\*\.)?                                           # Wildcard prefix (optional)
@@ -224,8 +224,9 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
             (?:[a-z0-9\-\.]|%[0-9a-f]{2})+
           )
           |(?:\[(?:[0-9a-f]{0,4}:)*(?:[0-9a-f]{0,4})\])         # or a well formed IPv6 address
+          |localhost
         )
-        (?::[0-9]+)?                                            # Server port number (optional)
+        (?::(?:[0-9]+|\*))?                                     # Server port number or wildcard (optional)
         (?:[\/|\?]
           (?:[\w#!:\.\+=&@$'~*,;\/\(\)\[\]\-]|%[0-9a-f]{2})     # The path (optional)
         *)?
