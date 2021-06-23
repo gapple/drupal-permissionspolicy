@@ -249,16 +249,12 @@ class PermissionsPolicySettingsForm extends ConfigFormBase {
       $config->set($policyTypeKey . '.enable', !empty($policyFormData['enable']));
 
       foreach ($featureNames as $featureName) {
-        if (empty($policyFormData['features'][$featureName])) {
+        if (empty($policyFormData['features'][$featureName]['enable'])) {
           continue;
         }
 
         $featureFormData = $policyFormData['features'][$featureName];
         $featureOptions = [];
-
-        if (empty($featureFormData['enable'])) {
-          continue;
-        }
 
         if (in_array($featureFormData['base'], ['empty', 'self'])) {
           if (!empty($featureFormData['sources'])) {
