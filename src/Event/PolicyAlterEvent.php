@@ -3,7 +3,7 @@
 namespace Drupal\permissionspolicy\Event;
 
 use Drupal\permissionspolicy\PermissionsPolicy;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
