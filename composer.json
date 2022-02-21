@@ -11,7 +11,7 @@
         "source": "https://git.drupalcode.org/project/permissionspolicy"
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.3 || ^8.0",
         "drupal/core": "^8.9 || ^9",
         "gapple/structured-fields": "^1.0"
     }
