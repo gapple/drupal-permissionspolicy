@@ -69,6 +69,7 @@ class PermissionsPolicy {
     'sync-script'                     => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
     'trust-token-redemption'          => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
     'vertical-scroll'                 => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
+    'window-placement'                => PermissionsPolicy::FEATURE_SCHEMA_ALLOWLIST,
   ];
 
   /**
@@ -121,6 +122,7 @@ class PermissionsPolicy {
     // 'sync-script'                     => PermissionsPolicy::ORIGIN_SELF,
     // 'trust-token-redemption'          => PermissionsPolicy::ORIGIN_SELF,
     'vertical-scroll'                 => PermissionsPolicy::ORIGIN_ANY,
+    'window-placement'                => PermissionsPolicy::ORIGIN_SELF,
   ];
 
   /**
