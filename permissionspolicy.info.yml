@@ -1,5 +1,5 @@
 name: Permissions Policy
 type: module
 description: Provide Permissions-Policy header
-core_version_requirement: ^8.9 || ^9
+core_version_requirement: ^9 || ^10
 configure: permissionspolicy.settings

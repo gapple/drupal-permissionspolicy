@@ -2,13 +2,15 @@
 
 namespace Drupal\Tests\permissionspolicy\Unit\EventSubscriber;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Tests\UnitTestCase;
 use Drupal\permissionspolicy\EventSubscriber\ResponseSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -20,14 +22,14 @@ class ResponseSubscriberTest extends UnitTestCase {
   /**
    * Mock HTTP Response.
    *
-   * @var \Drupal\Core\Render\HtmlResponse|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\Core\Render\HtmlResponse|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $response;
 
   /**
    * Mock Response Event.
    *
-   * @var \Symfony\Component\HttpKernel\Event\FilterResponseEvent|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Symfony\Component\HttpKernel\Event\ResponseEvent|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $event;
 
@@ -44,31 +46,20 @@ class ResponseSubscriberTest extends UnitTestCase {
   public function setUp(): void {
     parent::setUp();
 
-    $this->response = $this->getMockBuilder(HtmlResponse::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $this->response->headers = $this->getMockBuilder(ResponseHeaderBag::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $responseCacheableMetadata = $this->getMockBuilder(CacheableMetadata::class)
-      ->getMock();
+    $this->response = $this->createMock(HtmlResponse::class);
+    $this->response->headers = $this->createMock(ResponseHeaderBag::class);
+    $responseCacheableMetadata = $this->createMock(CacheableMetadata::class);
     $this->response->method('getCacheableMetadata')
       ->willReturn($responseCacheableMetadata);
 
-    /** @var \Symfony\Component\HttpKernel\Event\FilterResponseEvent|\PHPUnit_Framework_MockObject_MockObject $event */
-    $this->event = $this->getMockBuilder(FilterResponseEvent::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $this->event->expects($this->any())
-      ->method('isMasterRequest')
-      ->willReturn(TRUE);
-    $this->event->expects($this->any())
-      ->method('getResponse')
-      ->willReturn($this->response);
+    $this->event = new ResponseEvent(
+      $this->createMock(HttpKernelInterface::class),
+      $this->createMock(Request::class),
+      HttpKernelInterface::MASTER_REQUEST,
+      $this->response
+    );
 
-    $this->eventDispatcher = $this->getMockBuilder(EventDispatcher::class)
-      ->disableOriginalConstructor()
-      ->getMock();
+    $this->eventDispatcher = $this->createMock(EventDispatcher::class);
   }
 
   /**
@@ -86,7 +77,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    * @covers ::onKernelResponse
    */
   public function testEmptyPolicy() {
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [
@@ -114,7 +105,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    */
   public function testDisabledPolicy() {
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [
@@ -147,7 +138,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    */
   public function testSingleDirective() {
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [
@@ -180,7 +171,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    */
   public function testMultipleDirectives() {
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [
@@ -216,7 +207,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    */
   public function testOverrideWhenEmpty() {
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [
@@ -252,7 +243,7 @@ class ResponseSubscriberTest extends UnitTestCase {
    */
   public function testNoOverrideWhenDisabled() {
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit_Framework_MockObject_MockObject $configFactory */
+    /** @var \Drupal\Core\Config\ConfigFactoryInterface|\PHPUnit\Framework\MockObject\MockObject $configFactory */
     $configFactory = $this->getConfigFactoryStub([
       'permissionspolicy.settings' => [
         'enforce' => [

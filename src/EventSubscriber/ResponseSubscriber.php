@@ -2,6 +2,7 @@
 
 namespace Drupal\permissionspolicy\EventSubscriber;
 
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\permissionspolicy\Event\PolicyAlterEvent;
@@ -9,7 +10,6 @@ use Drupal\permissionspolicy\PermissionsPolicy;
 use Drupal\permissionspolicy\PermissionsPolicyEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -58,11 +58,11 @@ class ResponseSubscriber implements EventSubscriberInterface {
   /**
    * Add Permissions-Policy header to response.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The Response event.
    */
-  public function onKernelResponse(FilterResponseEvent $event) {
-    if (!$event->isMasterRequest()) {
+  public function onKernelResponse(ResponseEvent $event) {
+    if (!$event->isMainRequest()) {
       return;
     }
 
@@ -108,8 +108,8 @@ class ResponseSubscriber implements EventSubscriberInterface {
       }
 
       $this->eventDispatcher->dispatch(
-        PermissionsPolicyEvents::POLICY_ALTER,
-        new PolicyAlterEvent($policy, $response)
+        new PolicyAlterEvent($policy, $response),
+        PermissionsPolicyEvents::POLICY_ALTER
       );
 
       if (($headerValue = $policy->getHeaderValue())) {

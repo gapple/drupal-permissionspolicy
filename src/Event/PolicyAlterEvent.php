@@ -2,8 +2,8 @@
 
 namespace Drupal\permissionspolicy\Event;
 
+use Symfony\Contracts\EventDispatcher\Event;
 use Drupal\permissionspolicy\PermissionsPolicy;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
